@@ -2915,7 +2915,10 @@ class PlayState extends MusicBeatState
 		{
 			iconP1.swapOldIcon();
 		}*/
-		health = FlxMath.lerp(health, health, .2/(ClientPrefs.framerate / 90));
+		if (ClientPrefs.drainType == 'Always'){
+		    
+		health -= 0.002 * ClientPrefs.healthDrain;
+		}
 		callOnLuas('onUpdate', [elapsed]);
         if (script != null)
 		{
@@ -3141,6 +3144,7 @@ class PlayState extends MusicBeatState
 					var curTime:Float = Conductor.songPosition - ClientPrefs.noteOffset;
 					if(curTime < 0) curTime = 0;
 					songPercent = (curTime / songLength);
+					if (ClientPrefs.timeBarType == 'Repeat Bar')
 					songPercentRepeat = (curTime * songLength);
 
 					var songCalc:Float = (songLength - curTime);
@@ -3152,13 +3156,13 @@ class PlayState extends MusicBeatState
 					secondsTotal = Math.floor(songLength / 1000);
 
 					if(ClientPrefs.timeBarType != 'Song Name')
-						timeTxt.text = FlxStringUtil.formatTime(secondsTotal, false);
+					timeTxt.text = FlxStringUtil.formatTime(secondsTotal, false);
 					if(ClientPrefs.timeBarType == 'Song Percentage')
 					timeTxt.text = '(${Highscore.floorDecimal(songPercent * 100, 1)}%)';
 					if(ClientPrefs.timeBarType == 'Time Length')
 					timeTxt.text = '${FlxStringUtil.formatTime(secondsTotal, false)} - ${FlxStringUtil.formatTime(Math.floor(songLength / 1000), false)}';
 					if(ClientPrefs.timeBarType == 'Time Length Percent')
-					timeTxt.text = '(${Highscore.floorDecimal(songPercent * 100, 1)}%) - ${FlxStringUtil.formatTime(secondsTotal, false)} / ${FlxStringUtil.formatTime(Math.floor(songLength / 1000), false)}';
+					timeTxt.text = '(${Highscore.floorDecimal(songPercent * 100, 1)}%) - (${FlxStringUtil.formatTime(secondsTotal, false)} / ${FlxStringUtil.formatTime(Math.floor(songLength / 1000), false)})';
 
 				}
 			}
@@ -4555,7 +4559,7 @@ class PlayState extends MusicBeatState
 
 	function opponentNoteHit(note:Note):Void
 	{
-	    if(healthBar.percent > 20)
+	    if(healthBar.percent > 20 && ClientPrefs.drainType == 'Note Hit')
 	    health -= 0.023 * ClientPrefs.healthDrain;
 		if (Paths.formatToSongPath(SONG.song) != 'tutorial')
 			camZooming = true;
