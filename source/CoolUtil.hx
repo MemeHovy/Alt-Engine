@@ -48,7 +48,7 @@ class CoolUtil
 		}
 		return Paths.formatToSongPath(fileSuffix);
 	}
-        #if sys
+    #if sys
 	public static function coolPathArray(path:String):Array<String>
 	{
 		return FileSystem.readDirectory(FileSystem.absolutePath(path));
