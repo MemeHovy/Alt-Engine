@@ -1054,7 +1054,7 @@ class PlayState extends MusicBeatState
 		strumLine.scrollFactor.set();
 
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
-		timeTxt = new FlxText(-20, 680, 400, "", 32);
+		timeTxt = new FlxText(0, timeBar.y - 25, 400, "", 28);
 		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		timeTxt.scrollFactor.set();
 		timeTxt.alpha = 0;
@@ -1254,12 +1254,12 @@ class PlayState extends MusicBeatState
 		    judgementCounter.text = 'Great: ${Highscore.floorDecimal(greatsPercent * 100,2)}\nSick: ${Highscore.floorDecimal(sicksPercent * 100, 2)}%\nGood: ${Highscore.floorDecimal(goodsPercent * 100, 2)}%\nBad: ${Highscore.floorDecimal(badsPercent * 100, 2)}%\nShit: ${Highscore.floorDecimal(shitsPercent * 100, 2)}%\nSad: ${Highscore.floorDecimal(sadsPercent * 100, 2)}%\nJudgement percent text by\nFearester';
 		}
 
-		botplayTxt = new FlxText(0, timeBar.y - 25 , FlxG.width, "NOT AUTO PLAY", 28);
+		botplayTxt = new FlxText(0, timeBar.y - 25 , FlxG.width, "AUTO PLAY", 28);
 		botplayTxt.screenCenter(X);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 26, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
 		botplayTxt.borderSize = 1.25;
-		botplayTxt.visible = true;
+		botplayTxt.visible = false;
 		add(botplayTxt);
 		if(ClientPrefs.downScroll) {
 			botplayTxt.y = 430;
@@ -3075,18 +3075,16 @@ class PlayState extends MusicBeatState
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
-		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		iconP1.scale.set(mult, mult);
-		iconP1.updateHitbox();
+        iconP1.setGraphicSize(Std.int(FlxMath.lerp(150, iconP1.width, CoolUtil.boundTo(1 - (elapsed * 30), 0, 1))));
+		iconP2.setGraphicSize(Std.int(FlxMath.lerp(150, iconP2.width, CoolUtil.boundTo(1 - (elapsed * 30), 0, 1))));
 
-		var mult:Float = FlxMath.lerp(1, iconP2.scale.x, CoolUtil.boundTo(1 - (elapsed * 9), 0, 1));
-		iconP2.scale.set(mult, mult);
+		iconP1.updateHitbox();
 		iconP2.updateHitbox();
 
 		var iconOffset:Int = 26;
 
-		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) + (150 * iconP1.scale.x - 150) / 2 - iconOffset;
-		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (150 * iconP2.scale.x) / 2 - iconOffset * 2;
+        iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
+		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
 
 		if (health > 2)
 			health = 2;
@@ -4703,7 +4701,7 @@ class PlayState extends MusicBeatState
 				StrumPlayAnim(false, Std.int(Math.abs(note.noteData)), time);
 			} 
 			else {
-				StrumPlayAnim(false, Std.int(Math.abs(note.noteData)) % 4, 0);
+			spr.playAnim('confirm', true);
 			}
 			note.wasGoodHit = true;
 			vocals.volume = ClientPrefs.vocalVolume;
