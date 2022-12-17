@@ -39,7 +39,8 @@ typedef FreePlayData =
     ScoreBGA:Float,
     DifficultText:Array<String>,
     DiffSize:Int,
-    iconAlpha:Array<Float>
+    iconAlpha:Array<Float>,
+    curZoom:Float
 }
 
 class FreeplayState extends MusicBeatState
@@ -458,7 +459,18 @@ class FreeplayState extends MusicBeatState
 		}
 		vocals = null;
 	}
+	
+override function beatHit()
+	{
+		if (curBeat % 16 == 0) 
+		{
+			FlxG.camera.zoom = FreeplayJSON.curZoom;
+			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.5, {ease: FlxEase.circOut});
+		}
 
+		super.beatHit();
+	}
+	
 	function changeDiff(change:Int = 0)
 	{
 		curDifficulty += change;
