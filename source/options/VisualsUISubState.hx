@@ -53,7 +53,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'timeBarType',
 			'string',
 			'Time Elapsed / Song Length',
-			['Time Elapsed / Song Length', 'Song Percentage', 'Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
+			['Time Length Percent' ,'Repeat Bar', 'Time Length', 'Song Percentage', 'Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
 		addOption(option);
 		
 		var option:Option = new Option('judgement Text Type:',
@@ -122,6 +122,14 @@ class VisualsUISubState extends BaseOptionsMenu
 			['None', 'Breakfast', 'Tea Time']);
 		addOption(option);
 		option.onChange = onChangePauseMusic;
+		
+		var option:Option = new Option('Drain Type:',
+			"Change Drain Type",
+			'drainType',
+			'string',
+			'Note Hit',
+			['None', 'Note Hit', 'Always']);
+		addOption(option);
 		
 		#if CHECK_FOR_UPDATES
 		var option:Option = new Option('Check for Updates',
