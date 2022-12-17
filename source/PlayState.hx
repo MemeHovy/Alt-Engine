@@ -1054,8 +1054,8 @@ class PlayState extends MusicBeatState
 		strumLine.scrollFactor.set();
 
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
-		timeTxt = new FlxText(0, timeBar.y - 25, 400, "", 28);
-		timeTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeTxt = new FlxText(0, 680 , 400, "", 28);
+		timeTxt.setFormat(Paths.font("vcr.ttf"), 28, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		timeTxt.scrollFactor.set();
 		timeTxt.alpha = 0;
 		timeTxt.borderSize = 2;
@@ -1071,7 +1071,7 @@ class PlayState extends MusicBeatState
 		timeBarBG = new AttachedSprite('timeBar');
 		timeBarBG.x = timeTxt.x;
 		timeBarBG.y = timeTxt.y + (timeTxt.height / 4);
-                timeBarBG.screenCenter(X);
+        timeBarBG.screenCenter(X);
 		timeBarBG.scrollFactor.set();
 		timeBarBG.alpha = 0;
 		timeBarBG.visible = showTime;
@@ -1082,6 +1082,11 @@ class PlayState extends MusicBeatState
 
 		timeBar = new FlxBar(0, 705, LEFT_TO_RIGHT, 1280, 20, this,
 			'songPercent', 0, 1);
+		if(ClientPrefs.timeBarType == 'Repeat Bar')
+		{
+		timeBar = new FlxBar(0, 705, LEFT_TO_RIGHT, 1280, 20, this,
+			'songPercentRepeat', 0, 1);
+		}
 		timeBar.scrollFactor.set();
 		timeBar.screenCenter(X);
 		timeBar.createFilledBar(0xFF000000, 0xFFFFFFFF);
@@ -1095,12 +1100,6 @@ class PlayState extends MusicBeatState
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		add(strumLineNotes);
 		add(grpNoteSplashes);
-
-		if(ClientPrefs.timeBarType == 'Song Name')
-		{
-			timeTxt.size = 24;
-			timeTxt.y += 3;
-		}
 
 		var splash:NoteSplash = new NoteSplash(100, 100, 0);
 		grpNoteSplashes.add(splash);
