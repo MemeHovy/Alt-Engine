@@ -4701,7 +4701,11 @@ class PlayState extends MusicBeatState
 				StrumPlayAnim(false, Std.int(Math.abs(note.noteData)), time);
 			} 
 			else {
-			spr.playAnim('confirm', true);
+			var spr = playerStrums.members[note.noteData];
+			if(spr != null)
+				{
+					spr.playAnim('confirm', true);
+				}
 			}
 			note.wasGoodHit = true;
 			vocals.volume = ClientPrefs.vocalVolume;
