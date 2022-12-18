@@ -47,7 +47,7 @@ class SongScript {
 
 		interp.variables.set(libName, Type.resolveClass(str + libName));
              }
-        }
+        });
 		interp.variables.set('Modchart', ModchartAPI);
 	}
 
