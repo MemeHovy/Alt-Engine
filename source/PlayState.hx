@@ -2914,7 +2914,7 @@ class PlayState extends MusicBeatState
 		{
 			iconP1.swapOldIcon();
 		}*/
-		if (ClientPrefs.drainType == 'Always'){
+		if (ClientPrefs.drainType == 'Always' && healthBar.percent > 20){
 		    
 		health -= 0.002 * ClientPrefs.healthDrain;
 		}
