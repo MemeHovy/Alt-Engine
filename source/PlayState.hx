@@ -1116,8 +1116,6 @@ class PlayState extends MusicBeatState
 
 		generateSong(SONG.song);
 		
-		startScript();
-		
 		#if LUA_ALLOWED
 		for (notetype in noteTypeMap.keys())
 		{
@@ -2456,10 +2454,6 @@ class PlayState extends MusicBeatState
 		#end
 		setOnLuas('songLength', songLength);
 		callOnLuas('onSongStart', []);
-		if (script != null)
-		{
-			script.executeFunc("onSongStart");
-		}
 	}
 
 	var debugNum:Int = 0;
@@ -5308,3 +5302,4 @@ script.call('beatHit', [curBeat]);
 	var curLight:Int = -1;
 	var curLightEvent:Int = -1;
 }
+fix
