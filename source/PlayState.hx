@@ -1,5 +1,6 @@
 package;
 
+import modding.HScript;
 import flixel.graphics.FlxGraphic;
 #if desktop
 import Discord.DiscordClient;
@@ -330,7 +331,7 @@ class PlayState extends MusicBeatState
 	
 	var precacheList:Map<String, String> = new Map<String, String>();
 
-    public var script:Script;
+    var script = new SongScript();
     
 	override public function create()
 	{
@@ -339,6 +340,9 @@ class PlayState extends MusicBeatState
 
 		// for lua
 		instance = this;
+		
+		script.loadScript(SONG.song.toLowerCase());
+		script.call('create', []);
 
 		if (!inReplay)
 		{
@@ -2918,6 +2922,7 @@ class PlayState extends MusicBeatState
 		    
 		health -= 0.002 * ClientPrefs.healthDrain;
 		}
+		script.call('update', [elapsed]);
 		callOnLuas('onUpdate', [elapsed]);
         if (script != null)
 		{
@@ -3402,6 +3407,7 @@ class PlayState extends MusicBeatState
 	function doDeathCheck(?skipHealthCheck:Bool = false) {
 		if (((skipHealthCheck && instakillOnMiss) || health <= 0) && !practiceMode && !isDead)
 		{
+		    script.call('playerDeath', []);
 			var ret:Dynamic = callOnLuas('onGameOver', [], false);
 			if(ret != FunkinLua.Function_Stop) {
 				boyfriend.stunned = true;
@@ -3877,7 +3883,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 		#end
-
+script.call('songFinish', []);
 		var ret:Dynamic = callOnLuas('onEndSong', [], false);
 		if(ret != FunkinLua.Function_Stop && !transitioning) {
 			if (SONG.validScore)
@@ -4600,6 +4606,7 @@ class PlayState extends MusicBeatState
 		StrumPlayAnim(true, Std.int(Math.abs(note.noteData)), time);
 		note.hitByOpponent = true;
 
+        script.call('cpuNoteHit', []);
 		callOnLuas('opponentNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
 
 		if (!note.isSustainNote)
@@ -4716,6 +4723,7 @@ class PlayState extends MusicBeatState
 			var isSus:Bool = note.isSustainNote; //GET OUT OF MY HEAD, GET OUT OF MY HEAD, GET OUT OF MY HEAD
 			var leData:Int = Math.round(Math.abs(note.noteData));
 			var leType:String = note.noteType;
+			script.call('noteHit', []);
 			callOnLuas('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
             
 			if (!note.isSustainNote)
@@ -4986,7 +4994,7 @@ class PlayState extends MusicBeatState
 		lastStepHit = curStep;
 		setOnLuas('curStep', curStep);
 		callOnLuas('onStepHit', []);
-		
+		script.call('beatHit', [curBeat]);
 		if (script != null)
 		{
 			script.setVariable("curStep", curStep);
@@ -5085,6 +5093,7 @@ class PlayState extends MusicBeatState
 		}
 		lastBeatHit = curBeat;
 
+script.call('beatHit', [curBeat]);
 		setOnLuas('curBeat', curBeat); //DAWGG?????
 		callOnLuas('onBeatHit', []);
 	}
