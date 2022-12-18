@@ -1,7 +1,5 @@
 package;
 
-import modding.HScript;
-import flixel.graphics.FlxGraphic;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -62,7 +60,6 @@ import FunkinLua;
 import DialogueBoxPsych;
 import Conductor.Rating;
 import Script;
-import ReplayState.ReplayPauseSubstate;
 #if !flash 
 import flixel.addons.display.FlxRuntimeShader;
 import openfl.filters.ShaderFilter;
@@ -308,8 +305,6 @@ class PlayState extends MusicBeatState
 	var detailsPausedText:String = "";
 	#end
 
-	var inReplay:Bool;
-
 	//Achievement shit
 	var keysPressed:Array<Bool> = [];
 	var boyfriendIdleTime:Float = 0.0;
@@ -340,17 +335,6 @@ class PlayState extends MusicBeatState
 
 		// for lua
 		instance = this;
-		
-		script.loadScript(SONG.song.toLowerCase());
-		script.call('create', []);
-
-		if (!inReplay)
-		{
-			ReplayState.hits = [];
-			ReplayState.miss = [];
-			ReplayState.judgements = [];
-			ReplayState.sustainHits = [];
-		}
 
 		debugKeysChart = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_1'));
 		debugKeysCharacter = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_2'));
@@ -1088,8 +1072,8 @@ class PlayState extends MusicBeatState
 			'songPercent', 0, 1);
 		if(ClientPrefs.timeBarType == 'Repeat Bar')
 		{
-		timeBar = new FlxBar(0, 705, LEFT_TO_RIGHT, 1280, 20, this,
-			'songPercentRepeat', 0, 1);
+		timeBar = new FlxBar(0, 705, RIGHT_TO_LEFT, 1280, 20, this,
+			'songPercent', 0, 1);
 		}
 		timeBar.scrollFactor.set();
 		timeBar.screenCenter(X);
@@ -2908,7 +2892,6 @@ class PlayState extends MusicBeatState
 		    
 		health -= 0.002 * ClientPrefs.healthDrain;
 		}
-		script.call('update', [elapsed]);
 		callOnLuas('onUpdate', [elapsed]);
 
 		switch (curStage)
@@ -3132,13 +3115,12 @@ class PlayState extends MusicBeatState
 					if(curTime < 0) curTime = 0;
 					songPercent = (curTime / songLength);
 					if (ClientPrefs.timeBarType == 'Repeat Bar')
-					songPercentRepeat = (curTime * songLength);
 
 					var songCalc:Float = (songLength - curTime);
-					if(ClientPrefs.timeBarType == 'Time Elapsed' || ClientPrefs.timeBarType == 'Time Elapsed / Song Length') songCalc = curTime;
+					if(ClientPrefs.timeBarType == 'Time Elapsed' || ClientPrefs.timeBarType == 'Time Length' || ClientPrefs.timeBarType == 'Time Length Percent') songCalc = curTime;
 
 					var secondsTotal:Int = Math.floor(songCalc / 1000);
-					if(secondsTotal < 0 && ClientPrefs.timeBarType == 'Time Elapsed / Song Length') secondsTotal = 0;
+					if(secondsTotal < 0 && ClientPrefs.timeBarType == 'Time Length') secondsTotal = 0;
 					if (secondsTotal >= Math.floor(songLength / 1000))
 					secondsTotal = Math.floor(songLength / 1000);
 
@@ -3362,11 +3344,6 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.pause();
 			vocals.pause();
 		}
-		if (inReplay)
-			        openSubState(new ReplayPauseSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-		    else
-			        openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
-		//}
 
 		#if desktop
 		DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
@@ -3390,7 +3367,6 @@ class PlayState extends MusicBeatState
 	function doDeathCheck(?skipHealthCheck:Bool = false) {
 		if (((skipHealthCheck && instakillOnMiss) || health <= 0) && !practiceMode && !isDead)
 		{
-		    script.call('playerDeath', []);
 			var ret:Dynamic = callOnLuas('onGameOver', [], false);
 			if(ret != FunkinLua.Function_Stop) {
 				boyfriend.stunned = true;
@@ -3866,7 +3842,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 		#end
-script.call('songFinish', []);
 		var ret:Dynamic = callOnLuas('onEndSong', [], false);
 		if(ret != FunkinLua.Function_Stop && !transitioning) {
 			if (SONG.validScore)
@@ -3878,13 +3853,7 @@ script.call('songFinish', []);
 				#end
 			}
 
-			if (inReplay)
-			{
-				MusicBeatState.switchState(new FreeplayState());
-				return;
-			}
-
-			else if (chartingMode)
+			if (chartingMode)
 			{
 				openChartEditor();
 				return;
@@ -3896,24 +3865,6 @@ script.call('songFinish', []);
 				campaignMisses += songMisses;
 
 				storyPlaylist.remove(storyPlaylist[0]);
-
-				#if sys
-				if (!inReplay)
-				{
-					var files:Array<String> = CoolUtil.coolPathArray(Paths.getPreloadPath('replays/'));
-					var length:Null<Int> = null;
-					var song:String = SONG.song.coolSongFormatter().toLowerCase();
-
-					if (files == null)
-						length = 0;
-
-					else
-						length = files.length;
-
-					if (ClientPrefs.saveReplay)
-						File.saveContent(Paths.getPreloadPath('replays/$song ${length}.json'), ReplayState.stringify());
-				}
-				#end
 
 				if (storyPlaylist.length <= 0)
 				{
@@ -4075,12 +4026,6 @@ script.call('songFinish', []);
 
 		var rating:FlxSprite = new FlxSprite();
 		var score:Int = 350;
-
-		if (!inReplay)
-		{
-			ReplayState.hits.push(note.strumTime);
-			ReplayState.judgements.push(noteDiff);
-		}
 
 		if (optionalRating != null)
 			noteDiff = optionalRating;
@@ -4500,10 +4445,6 @@ script.call('songFinish', []);
 
 		if (!boyfriend.stunned)
 		{
-			if (!inReplay)
-			{
-				ReplayState.miss.push([Std.int(Conductor.songPosition), direction]);
-			}
 
 			health -= 0.05 * healthLoss;
 			if(instakillOnMiss)
@@ -4589,7 +4530,6 @@ script.call('songFinish', []);
 		StrumPlayAnim(true, Std.int(Math.abs(note.noteData)), time);
 		note.hitByOpponent = true;
 
-        script.call('cpuNoteHit', []);
 		callOnLuas('opponentNoteHit', [notes.members.indexOf(note), Math.abs(note.noteData), note.noteType, note.isSustainNote]);
 
 		if (!note.isSustainNote)
@@ -4646,12 +4586,7 @@ script.call('songFinish', []);
 				if(combo > 9999) combo = 9999;
 				popUpScore(note);
 			}
-
-			else if (!inReplay && note.isSustainNote)
-			{
-				ReplayState.sustainHits.push(Std.int(note.strumTime));
-			}
-
+			
 			health += note.hitHealth * healthGain;
 
 			if(!note.noAnimation) {
@@ -4706,7 +4641,6 @@ script.call('songFinish', []);
 			var isSus:Bool = note.isSustainNote; //GET OUT OF MY HEAD, GET OUT OF MY HEAD, GET OUT OF MY HEAD
 			var leData:Int = Math.round(Math.abs(note.noteData));
 			var leType:String = note.noteType;
-			script.call('noteHit', []);
 			callOnLuas('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
             
 			if (!note.isSustainNote)
@@ -4971,7 +4905,6 @@ script.call('songFinish', []);
 		lastStepHit = curStep;
 		setOnLuas('curStep', curStep);
 		callOnLuas('onStepHit', []);
-		script.call('stepHit', [curStep]);
 
 	}
 
@@ -5066,7 +4999,6 @@ script.call('songFinish', []);
 		}
 		lastBeatHit = curBeat;
 
-script.call('beatHit', [curBeat]);
 		setOnLuas('curBeat', curBeat); //DAWGG?????
 		callOnLuas('onBeatHit', []);
 	}
@@ -5217,7 +5149,7 @@ script.call('beatHit', [curBeat]);
 	#if ACHIEVEMENTS_ALLOWED
 	private function checkForAchievement(achievesToCheck:Array<String> = null):String
 	{
-		if(chartingMode || inReplay) return null;
+		if(chartingMode) return null;
 
 		var usedPractice:Bool = (ClientPrefs.getGameplaySetting('practice', false) || ClientPrefs.getGameplaySetting('botplay', false));
 		for (i in 0...achievesToCheck.length) {
@@ -5302,4 +5234,3 @@ script.call('beatHit', [curBeat]);
 	var curLight:Int = -1;
 	var curLightEvent:Int = -1;
 }
-fix
