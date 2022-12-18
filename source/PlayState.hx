@@ -1426,10 +1426,7 @@ class PlayState extends MusicBeatState
 
 		Conductor.safeZoneOffset = (ClientPrefs.safeFrames / 60) * 1000;
 		callOnLuas('onCreatePost', []);
-        if (script != null)
-		{
-			script.executeFunc("onCreate");
-		}
+
 		super.create();
 
 		cacheCountdown();
@@ -2133,11 +2130,6 @@ class PlayState extends MusicBeatState
 			callOnLuas('onStartCountdown', []);
 			return;
 		}
-		if (script != null)
-		{
-			script.executeFunc("onStartCountdown");
-		}
-
 		inCutscene = false;
 		var ret:Dynamic = callOnLuas('onStartCountdown', [], false);
 		if(ret != FunkinLua.Function_Stop) {
@@ -2924,10 +2916,7 @@ class PlayState extends MusicBeatState
 		}
 		script.call('update', [elapsed]);
 		callOnLuas('onUpdate', [elapsed]);
-        if (script != null)
-		{
-			script.executeFunc("onUpdate");
-		}
+
 		switch (curStage)
 		{
 			case 'tank':
@@ -4957,13 +4946,7 @@ script.call('songFinish', []);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 			FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		}
-		if (script != null)
-		{
-			script.executeFunc("destroy");
 
-			script.destroy();
-		}
-		
 		#if hscript
 		FunkinLua.hscript = null;
 		#end
@@ -4994,12 +4977,8 @@ script.call('songFinish', []);
 		lastStepHit = curStep;
 		setOnLuas('curStep', curStep);
 		callOnLuas('onStepHit', []);
-		script.call('beatHit', [curBeat]);
-		if (script != null)
-		{
-			script.setVariable("curStep", curStep);
-			script.executeFunc("onStepHit");
-		}
+		script.call('stepHit', [curStep]);
+
 	}
 
 	var lightningStrikeBeat:Int = 0;
@@ -5328,83 +5307,4 @@ script.call('beatHit', [curBeat]);
 
 	var curLight:Int = -1;
 	var curLightEvent:Int = -1;
-	
-	public function startScript()
-	{
-	    var formattedFolder:String = Paths.formatToSongPath(SONG.song);
-	    var scriptFolder:String = 'scripts';
-		var path:String = Paths.hscript(scriptFolder + '/script');
-		var path:String = Paths.hx(formattedFolder + '/script');
-		
-		var hxdata:String = "";
-
-		if (FileSystem.exists(path))
-			hxdata = File.getContent(path);
-
-		if (hxdata != "")
-		{
-			script = new Script();
-
-			script.setVariable("onSongStart", function()
-			{
-			});
-
-			script.setVariable("destroy", function()
-			{
-			});
-
-			script.setVariable("onCreate", function()
-			{
-			});
-
-			script.setVariable("onStartCountdown", function()
-			{
-			});
-
-			script.setVariable("onStepHit", function()
-			{
-			});
-
-			script.setVariable("onUpdate", function()
-			{
-			});
-
-			script.setVariable("import", function(lib:String, ?as:Null<String>) // Does this even work?
-			{
-				if (lib != null && Type.resolveClass(lib) != null)
-				{
-					script.setVariable(as != null ? as : lib, Type.resolveClass(lib));
-				}
-			});
-
-			script.setVariable("fromRGB", function(Red:Int, Green:Int, Blue:Int, Alpha:Int = 255)
-			{
-				return FlxColor.fromRGB(Red, Green, Blue, Alpha);
-			});
-
-			script.setVariable("curStep", curStep);
-			script.setVariable("bpm", SONG.bpm);
-
-			// PRESET CLASSES
-			script.setVariable("PlayState", instance);
-			script.setVariable("FlxTween", FlxTween);
-			script.setVariable("FlxEase", FlxEase);
-			script.setVariable("FlxSprite", FlxSprite);
-			script.setVariable("Math", Math);
-			script.setVariable("FlxG", FlxG);
-			script.setVariable("ClientPrefs", ClientPrefs);
-			script.setVariable("FlxTimer", FlxTimer);
-			script.setVariable("Main", Main);
-			script.setVariable("Conductor", Conductor);
-			script.setVariable("Std", Std);
-			script.setVariable("FlxTextBorderStyle", FlxTextBorderStyle);
-			script.setVariable("Paths", Paths);
-			script.setVariable("CENTER", FlxTextAlign.CENTER);
-			script.setVariable("FlxTextFormat", FlxTextFormat);
-			script.setVariable("InputFormatter", InputFormatter);
-			script.setVariable("FlxTextFormatMarkerPair", FlxTextFormatMarkerPair);
-
-			script.runScript(hxdata);
-		}
-	}
 }
