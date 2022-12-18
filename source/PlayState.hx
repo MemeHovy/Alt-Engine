@@ -325,9 +325,7 @@ class PlayState extends MusicBeatState
 	private var controlArray:Array<String>;
 	
 	var precacheList:Map<String, String> = new Map<String, String>();
-
-    var script = new SongScript();
-    
+	
 	override public function create()
 	{
 		Paths.clearStoredMemory();
@@ -3114,7 +3112,6 @@ class PlayState extends MusicBeatState
 					var curTime:Float = Conductor.songPosition - ClientPrefs.noteOffset;
 					if(curTime < 0) curTime = 0;
 					songPercent = (curTime / songLength);
-					if (ClientPrefs.timeBarType == 'Repeat Bar')
 
 					var songCalc:Float = (songLength - curTime);
 					if(ClientPrefs.timeBarType == 'Time Elapsed' || ClientPrefs.timeBarType == 'Time Length' || ClientPrefs.timeBarType == 'Time Length Percent') songCalc = curTime;
