@@ -40,15 +40,13 @@ class SongScript {
 		interp.variables.set("Paths",ModPaths);
 		interp.variables.set("CoolUtil",CoolUtil);
         interp.variables.set("import",function(libName:String, ?libPackage:String = '') {
-			#if HSCRIPT_ALLOWED
 			try {
 				var str:String = '';
 				if(libPackage.length > 0)
 					str = libPackage + '.';
 
 		interp.variables.set(libName, Type.resolveClass(str + libName));
-				})
-			#end
+             }
         }
 		interp.variables.set('Modchart', ModchartAPI);
 	}
