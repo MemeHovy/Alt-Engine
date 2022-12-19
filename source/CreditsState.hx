@@ -64,9 +64,7 @@ class CreditsState extends MusicBeatState
 		versionShit.scrollFactor.set();
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
-		
-		#if CHECK_FOR_UPDATES
-	    {
+
 			trace('checking for update');
 			var http = new haxe.Http("https://raw.githubusercontent.com/Fearester/Alt-Engine/main/gitVersion.txt");
 			http.onData = function (data:String)
