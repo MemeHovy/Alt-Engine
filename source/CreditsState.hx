@@ -73,19 +73,18 @@ class CreditsState extends MusicBeatState
 				var curVersion:String = MainMenuState.altEngineVersion.trim();
 						if(mustUpdate)
 		{
-		    
 		var updateTxt:FlxText = new FlxText(0, FlxG.height - 24, 0, "Updated to: ", 16);
 		updateTxt = "Updated to " + curVersion + "\nNeed update to" + updateVersion;
 		updateTxt.scrollFactor.set();
 		updateTxt.screenCenter(Y);
 		updateTxt.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(updateTxt);
-		}
 		
 		if(updateVersion == curVersion)
         {
 		updateTxt = "Updated to " + curVersion + "\nNot need update!!!";
         }
+	}
 				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
 				if(updateVersion != curVersion) {
 					trace('versions arent matching!');
