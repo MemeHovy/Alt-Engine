@@ -71,20 +71,7 @@ class CreditsState extends MusicBeatState
 			{
 				updateVersion = data.split('\n')[0].trim();
 				var curVersion:String = MainMenuState.altEngineVersion.trim();
-				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
-				if(updateVersion != curVersion) {
-					trace('versions arent matching!');
-					mustUpdate = true;
-				}
-			}
-
-			http.onError = function (error) {
-				trace('error: $error');
-			}
-
-			http.request();
-		
-		if(mustUpdate)
+						if(mustUpdate)
 		{
 		    
 		var updateTxt:FlxText = new FlxText(0, FlxG.height - 24, 0, "Updated to: ", 16);
@@ -99,6 +86,18 @@ class CreditsState extends MusicBeatState
         {
 		updateTxt = "Updated to " + curVersion + "\nNot need update!!!";
         }
+				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
+				if(updateVersion != curVersion) {
+					trace('versions arent matching!');
+					mustUpdate = true;
+				}
+			}
+
+			http.onError = function (error) {
+				trace('error: $error');
+			}
+
+			http.request();
         
 		#if MODS_ALLOWED
 		var path:String = SUtil.getPath() + 'modsList.txt';
