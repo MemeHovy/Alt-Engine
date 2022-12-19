@@ -84,7 +84,7 @@ class CreditsState extends MusicBeatState
 
 			http.request();
 		}
-		#end
+		
 		if(mustUpdate)
 		{
 		var updateTxt:FlxText = new FlxText(0, FlxG.height - 24, 0, "Updated to: ", 16);
