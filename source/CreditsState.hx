@@ -25,9 +25,6 @@ class CreditsState extends MusicBeatState
 {
 	var curSelected:Int = -1;
 
-	public static var updateVersion:String = '';
-	var mustUpdate:Bool = false;
-
 	private var grpOptions:FlxTypedGroup<Alphabet>;
 	private var iconArray:Array<AttachedSprite> = [];
 	private var creditsStuff:Array<Array<String>> = [];
@@ -65,39 +62,6 @@ class CreditsState extends MusicBeatState
 		versionShit.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(versionShit);
 
-			trace('checking for update');
-			var http = new haxe.Http("https://raw.githubusercontent.com/Fearester/Alt-Engine/main/gitVersion.txt");
-			http.onData = function (data:String)
-			{
-				updateVersion = data.split('\n')[0].trim();
-				var curVersion:String = MainMenuState.altEngineVersion.trim();
-						if(mustUpdate)
-		{
-		var updateTxt:FlxText = new FlxText(0, FlxG.height - 24, 0, "Updated to: ", 16);
-		updateTxt = "Updated to " + curVersion + "\nNeed update to" + updateVersion;
-		updateTxt.scrollFactor.set();
-		updateTxt.screenCenter(Y);
-		updateTxt.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		add(updateTxt);
-		
-		if(updateVersion == curVersion)
-        {
-		updateTxt = "Updated to " + curVersion + "\nNot need update!!!";
-        }
-	}
-				trace('version online: ' + updateVersion + ', your version: ' + curVersion);
-				if(updateVersion != curVersion) {
-					trace('versions arent matching!');
-					mustUpdate = true;
-				}
-			}
-
-			http.onError = function (error) {
-				trace('error: $error');
-			}
-
-			http.request();
-        
 		#if MODS_ALLOWED
 		var path:String = SUtil.getPath() + 'modsList.txt';
 		if(FileSystem.exists(path))
