@@ -3126,16 +3126,16 @@ class PlayState extends MusicBeatState
 
 					if(ClientPrefs.timeBarType != 'Song Name')
 					timeTxt.text = FlxStringUtil.formatTime(secondsTotal, false);
-					timeTxt.x -= 165;
+					timeTxt.x = -165;
 					if(ClientPrefs.timeBarType == 'Song Percentage')
 					timeTxt.text = '(${Highscore.floorDecimal(songPercent * 100, 1)}%)';
-					timeTxt.x -= 150;
+					timeTxt.x = -150;
 					if(ClientPrefs.timeBarType == 'Time Length')
 					timeTxt.text = '${FlxStringUtil.formatTime(secondsTotal, false)} - ${FlxStringUtil.formatTime(Math.floor(songLength / 1000), false)}';
-					timeTxt.x -= 105;
+					timeTxt.x = -105;
 					if(ClientPrefs.timeBarType == 'Time Length Percent')
 					timeTxt.text = '(${Highscore.floorDecimal(songPercent * 100, 1)}%) - (${FlxStringUtil.formatTime(secondsTotal, false)} / ${FlxStringUtil.formatTime(Math.floor(songLength / 1000), false)})';
-                    timeTxt.x -= 20;
+                    timeTxt.x = -20;
 				}
 			}
 
@@ -5022,8 +5022,8 @@ class PlayState extends MusicBeatState
 
 			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms)
 			{
-				FlxG.camera.zoom += 0.015 * camZoomingMult;
-				camHUD.zoom += 0.03 * camZoomingMult;
+				FlxG.camera.zoom += 0.03 * camZoomingMult;
+				camHUD.zoom += 0.06 * camZoomingMult;
 			}
 
 			if (SONG.notes[curSection].changeBPM)
