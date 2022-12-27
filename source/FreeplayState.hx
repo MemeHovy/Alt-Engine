@@ -76,9 +76,6 @@ class FreeplayState extends MusicBeatState
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
-		
-		beat = 0 + SwagSong.bpm;
-		Conductor.changeBPM(beat);
 
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
@@ -585,16 +582,6 @@ class FreeplayState extends MusicBeatState
 		scoreBG.y = FreeplayJSON.FreeplayScoreBGPos[1];
 		diffText.y = FreeplayJSON.DiffTextP[1];
 		diffText.x = FreeplayJSON.DiffTextP[0];
-	}
-	override function beatHit()
-	{
-		if (curBeat % 16 == 0) 
-		{
-			FlxG.camera.zoom = 1.15;
-			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.5, {ease: FlxEase.circOut});
-		}
-
-		super.beatHit();
 	}
 
 }
