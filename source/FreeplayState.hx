@@ -70,14 +70,15 @@ class FreeplayState extends MusicBeatState
 	var bg:FlxSprite;
 	var intendedColor:Int;
 	var colorTween:FlxTween;
-    var bpm:SwagSong.bpm;
+    var beat:Float;
     
 	override function create()
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 		
-		Conductor.changeBPM(bpm);
+		beat = 0 + SwagSong.bpm;
+		Conductor.changeBPM(beat);
 
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
