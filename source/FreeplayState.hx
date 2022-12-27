@@ -18,6 +18,7 @@ import flixel.tweens.FlxEase;
 import lime.utils.Assets;
 import flixel.system.FlxSound;
 import haxe.Json;
+import Song.SwagSong;
 import openfl.utils.Assets as OpenFlAssets;
 import WeekData;
 #if MODS_ALLOWED
@@ -40,7 +41,6 @@ typedef FreePlayData =
     DifficultText:Array<String>,
     DiffSize:Int,
     iconAlpha:Array<Float>,
-    curZoom:Float
 }
 
 class FreeplayState extends MusicBeatState
@@ -453,17 +453,6 @@ class FreeplayState extends MusicBeatState
 		vocals = null;
 	}
 	
-override function beatHit()
-	{
-		if (curBeat % 16 == 0) 
-		{
-			FlxG.camera.zoom = FreeplayJSON.curZoom;
-			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.5, {ease: FlxEase.circOut});
-		}
-
-		super.beatHit();
-	}
-	
 	function changeDiff(change:Int = 0)
 	{
 		curDifficulty += change;
@@ -599,7 +588,7 @@ override function beatHit()
 	}
 	override function beatHit()
 	{
-		if (curBeat % 4 == 0) 
+		if (curBeat % 16 == 0) 
 		{
 			FlxG.camera.zoom = 1.15;
 			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.5, {ease: FlxEase.circOut});
