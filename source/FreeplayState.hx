@@ -70,12 +70,15 @@ class FreeplayState extends MusicBeatState
 	var bg:FlxSprite;
 	var intendedColor:Int;
 	var colorTween:FlxTween;
-
+    var bpm:SwagSong.bpm;
+    
 	override function create()
 	{
 		Paths.clearStoredMemory();
 		Paths.clearUnusedMemory();
 		
+		Conductor.changeBPM(bpm);
+
 		persistentUpdate = true;
 		PlayState.isStoryMode = false;
 		WeekData.reloadWeekFiles(false);
@@ -593,6 +596,17 @@ override function beatHit()
 		diffText.y = FreeplayJSON.DiffTextP[1];
 		diffText.x = FreeplayJSON.DiffTextP[0];
 	}
+	override function beatHit()
+	{
+		if (curBeat % 4 == 0) 
+		{
+			FlxG.camera.zoom = 1.15;
+			FlxTween.tween(FlxG.camera, {zoom: 1}, 0.5, {ease: FlxEase.circOut});
+		}
+
+		super.beatHit();
+	}
+
 }
 
 class SongMetadata
