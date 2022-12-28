@@ -57,6 +57,7 @@ import animateatlas.AtlasFrameMaker;
 import Achievements;
 import StageData;
 import FunkinLua;
+import FunkinSScript;
 import DialogueBoxPsych;
 import Conductor.Rating;
 import Script;
@@ -310,9 +311,12 @@ class PlayState extends MusicBeatState
 	var boyfriendIdleTime:Float = 0.0;
 	var boyfriendIdled:Bool = false;
 
-	// Lua shit
+	// Scripting shit
 	public static var instance:PlayState;
+
+    public var scriptArray:Array<FunkinSScript> = [];
 	public var luaArray:Array<FunkinLua> = [];
+
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;
 	public var introSoundsSuffix:String = '';
 
@@ -909,6 +913,36 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
+		#if SCRIPT_EXTENSION
+		var filesPushed:Array<String> = [];
+		var foldersToCheck:Array<String> = [SUtil.getPath() + Paths.getPreloadPath('scripts/')];
+
+		#if MODS_ALLOWED
+		foldersToCheck.insert(0, Paths.mods('scripts/'));
+		if(Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
+			foldersToCheck.insert(0, Paths.mods(Paths.currentModDirectory + '/scripts/'));
+
+		for(mod in Paths.getGlobalMods())
+			foldersToCheck.insert(0, Paths.mods(mod + '/scripts/'));
+		#end
+
+		for (folder in foldersToCheck)
+		{
+			if(FileSystem.exists(folder))
+			{
+				for (file in FileSystem.readDirectory(folder))
+				{
+					if(file.endsWith('.hx') && !filesPushed.contains(file))
+					{
+						scriptArray.push(new FunkinSScript(folder + file));
+						filesPushed.push(file);
+					}
+				}
+			}
+		}
+		#end
+
+
 		// STAGE SCRIPTS
 		#if (MODS_ALLOWED && LUA_ALLOWED)
 		var doPush:Bool = false;
@@ -1303,6 +1337,36 @@ class PlayState extends MusicBeatState
 			}
 		}
 		#end
+
+		#if SCRIPT_EXTENSION
+		var filesPushed:Array<String> = [];
+		var foldersToCheck:Array<String> = [SUtil.getPath() + Paths.getPreloadPath('data/' + Paths.formatToSongPath(SONG.song) + '/')];
+
+		#if MODS_ALLOWED
+		foldersToCheck.insert(0, Paths.mods('data/' + Paths.formatToSongPath(SONG.song) + '/'));
+		if(Paths.currentModDirectory != null && Paths.currentModDirectory.length > 0)
+			foldersToCheck.insert(0, Paths.mods(Paths.currentModDirectory + '/data/' + Paths.formatToSongPath(SONG.song) + '/'));
+
+		for(mod in Paths.getGlobalMods())
+			foldersToCheck.insert(0, Paths.mods(mod + '/data/' + Paths.formatToSongPath(SONG.song) + '/' ));// using push instead of insert because these should run after everything else
+		#end
+
+		for (folder in foldersToCheck)
+		{
+			if(FileSystem.exists(folder))
+			{
+				for (file in FileSystem.readDirectory(folder))
+				{
+					if(file.endsWith('.hx') && !filesPushed.contains(file))
+					{
+						scriptArray.push(new FunkinSScript(folder + file));
+						filesPushed.push(file);
+					}
+				}
+			}
+		}
+		#end
+
 
 		var daSong:String = Paths.formatToSongPath(curSong);
 		if (isStoryMode && !seenCutscene)
@@ -5043,7 +5107,29 @@ class PlayState extends MusicBeatState
 		callOnLuas('onSectionHit', []);
 	}
 
+	public function callOnScripts(event:String, args:Array<Dynamic>)
+	{
+		#if !SCRIPT_EXTENSION
+		return;
+		#end
+
+		return for (i in scriptArray)
+			i.call(event, args);
+	}
+
+	public function setOnScripts(key:String, value:Dynamic)
+	{
+		#if !SCRIPT_EXTENSION
+		return;
+		#end
+
+		return for (i in scriptArray)
+			i.set(key, value);
+	}
+
 	public function callOnLuas(event:String, args:Array<Dynamic>, ignoreStops = true, exclusions:Array<String> = null):Dynamic {
+		callOnScripts(event, args);
+
 		var returnVal:Dynamic = FunkinLua.Function_Continue;
 		#if LUA_ALLOWED
 		if(exclusions == null) exclusions = [];
@@ -5067,6 +5153,8 @@ class PlayState extends MusicBeatState
 	}
 
 	public function setOnLuas(variable:String, arg:Dynamic) {
+		setOnScripts(variable, arg);
+
 		#if LUA_ALLOWED
 		for (i in 0...luaArray.length) {
 			luaArray[i].set(variable, arg);

@@ -47,6 +47,7 @@
 	<define name="MODS_ALLOWED" if="desktop || android" />
 	<define name="LUA_ALLOWED" if="desktop || android" />
 	<define name="HSCRIPT_ALLOWED" />
+	<define name="SCRIPT_EXTENSION" />
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="VIDEOS_ALLOWED" if="web || windows || android" unless="32bits"/>
 	<define name="PSYCH_WATERMARKS" /> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
@@ -142,6 +143,7 @@
 	<haxelib name="flixel-ui" />
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
+	<haxelib name="SScript" if="SCRIPT_EXTENSION"/>
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="spinehaxe" />
 	<haxelib name="polymod-mastereric" rename="polymod" if="FUTURE_POLYMOD" />
