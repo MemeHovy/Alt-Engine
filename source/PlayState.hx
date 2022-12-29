@@ -4976,7 +4976,17 @@ class PlayState extends MusicBeatState
 		lastStepHit = curStep;
 		setOnLuas('curStep', curStep);
 		callOnLuas('onStepHit', []);
-
+			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'Both camera' && ClientPrefs.beatType == '1/2')
+			{
+				FlxG.camera.zoom += 0.03 * camZoomingMult;
+				camHUD.zoom += 0.06 * camZoomingMult;
+			} else if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'HUD camera' && ClientPrefs.beatType == '1/2')
+			{
+				camHUD.zoom += 0.06 * camZoomingMult;
+			} else if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'Game camera' && ClientPrefs.beatType == '1/2')
+			{
+				FlxG.camera.zoom += 0.03 * camZoomingMult;
+			}
 	}
 
 	var lightningStrikeBeat:Int = 0;
@@ -5013,6 +5023,18 @@ class PlayState extends MusicBeatState
 		{
 			dad.dance();
 		}
+		
+		if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'Both camera' && ClientPrefs.beatType == '1/4')
+			{
+				FlxG.camera.zoom += 0.03 * camZoomingMult;
+				camHUD.zoom += 0.06 * camZoomingMult;
+			} else if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'HUD camera' && ClientPrefs.beatType == '1/4')
+			{
+				camHUD.zoom += 0.06 * camZoomingMult;
+			} else if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'Game camera' && ClientPrefs.beatType == '1/4')
+			{
+				FlxG.camera.zoom += 0.03 * camZoomingMult;
+			}
 
 		switch (curStage)
 		{
@@ -5085,10 +5107,16 @@ class PlayState extends MusicBeatState
 				moveCameraSection();
 			}
 
-			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms)
+			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'Both camera' && ClientPrefs.beatType == '1/16')
 			{
 				FlxG.camera.zoom += 0.03 * camZoomingMult;
 				camHUD.zoom += 0.06 * camZoomingMult;
+			} else if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'HUD camera' && ClientPrefs.beatType == '1/16')
+			{
+				camHUD.zoom += 0.06 * camZoomingMult;
+			} else if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'Game camera' && ClientPrefs.beatType == '1/16')
+			{
+				FlxG.camera.zoom += 0.03 * camZoomingMult;
 			}
 
 			if (SONG.notes[curSection].changeBPM)
