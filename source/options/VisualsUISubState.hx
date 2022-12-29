@@ -131,6 +131,22 @@ class VisualsUISubState extends BaseOptionsMenu
 			['None', 'Note Hit', 'Always']);
 		addOption(option);
 		
+		var option:Option = new Option('Beat Type:',
+			"Change Beat Type",
+			'beatType',
+			'string',
+			'1/16',
+			['1/2', '1/4', '1/16']);
+		addOption(option);
+		
+		var option:Option = new Option('Beat Mode:',
+			"Change Beat Mode",
+			'beatMode',
+			'string',
+			'Both camera',
+			['Both camera', 'HUD camera', 'Game camera']);
+		addOption(option);
+		
 		#if CHECK_FOR_UPDATES
 		var option:Option = new Option('Check for Updates',
 			'On Release builds, turn this on to check for updates when you start the game.',
