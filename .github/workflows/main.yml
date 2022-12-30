@@ -37,7 +37,7 @@ jobs:
           haxelib install hxcpp > /dev/null
           haxelib install lime
           haxelib install openfl
-          haxelib --never install flixel
+          haxelib --never install flixel 4.11.0
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
@@ -48,6 +48,7 @@ jobs:
           haxelib install hxCodec
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
           haxelib install hscript
+          haxelib git SScript https://github.com/TheWorldMachinima/SScript
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
@@ -78,7 +79,7 @@ jobs:
           haxelib install hxcpp > nul
           haxelib install lime
           haxelib install openfl
-          haxelib --never install flixel
+          haxelib --never install flixel 4.11.0
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
@@ -89,6 +90,7 @@ jobs:
           haxelib install hxCodec
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
           haxelib install hscript
+          haxelib git SScript https://github.com/TheWorldMachinima/SScript
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
@@ -120,7 +122,7 @@ jobs:
           haxelib install hxcpp > /dev/null
           haxelib install lime
           haxelib install openfl
-          haxelib --never install flixel
+          haxelib --never install flixel 4.11.0
           haxelib run lime setup flixel
           haxelib run lime setup
           haxelib install flixel-tools
@@ -131,6 +133,7 @@ jobs:
           haxelib install hxCodec
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
           haxelib install hscript
+          haxelib git SScript https://github.com/TheWorldMachinima/SScript
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib install hxcpp-debug-server
