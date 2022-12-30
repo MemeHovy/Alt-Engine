@@ -214,7 +214,7 @@ class PlayState extends MusicBeatState
 	//Gameplay settings
 	public var healthGain:Float = 1;
 	public var healthLoss:Float = 1;
-    public var healthDrain:Float = 0;
+	public var healthDrain:Float = 0;
 	public var instakillOnMiss:Bool = false;
 	public var cpuControlled:Bool = false;
 	public var practiceMode:Bool = false;
@@ -314,7 +314,7 @@ class PlayState extends MusicBeatState
 	// Scripting shit
 	public static var instance:PlayState;
 
-    public var scriptArray:Array<FunkinSScript> = [];
+	public var scriptArray:Array<FunkinSScript> = [];
 	public var luaArray:Array<FunkinLua> = [];
 
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;
@@ -359,7 +359,7 @@ class PlayState extends MusicBeatState
 		//Ratings
 		ratingsData.push(new Rating('great')); //default rating
 		
-		var rating:Rating = new Rating('sick'); //default rating
+		var rating:Rating = new Rating('sick');
         rating.ratingMod = 0.885;
         rating.score = 350;
         rating.noteSplash = false;
@@ -383,7 +383,7 @@ class PlayState extends MusicBeatState
 		rating.noteSplash = false;
 		ratingsData.push(rating);
 		
-		var rating:Rating = new Rating('sad'); //default rating
+		var rating:Rating = new Rating('sad');
         rating.ratingMod = 0;
         rating.score = -100;
         rating.noteSplash = false;
@@ -2400,7 +2400,13 @@ class PlayState extends MusicBeatState
 	    judgementCounter.text = 'Greats: ${greats}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nSads: ${sads}\nMisses: ${songMisses}\njudgement text by kadeDev.';
         if (ClientPrefs.judgementCounterType == "Percentage")
 		{
-		    judgementCounter.text = 'Great: ${Highscore.floorDecimal(greatsPercent * 100, 3)}%\nSick: ${Highscore.floorDecimal(sicksPercent * 100, 3)}%\nGood: ${Highscore.floorDecimal(goodsPercent * 100, 3)}%\nBad: ${Highscore.floorDecimal(badsPercent * 100, 3)}%\nShit: ${Highscore.floorDecimal(shitsPercent * 100, 3)}%\nSad: ${Highscore.floorDecimal(sadsPercent * 100, 3)}%\nJudgement percent text by Fearester';
+		    judgementCounter.text = 'Great: ${Highscore.floorDecimal(greatsPercent * 100, 3)}%\n'
+			    + 'Sick: ${Highscore.floorDecimal(sicksPercent * 100, 3)}%\n'
+			    + 'Good: ${Highscore.floorDecimal(goodsPercent * 100, 3)}%\n'
+			    + 'Bad: ${Highscore.floorDecimal(badsPercent * 100, 3)}%\n'
+			    + 'Shit: ${Highscore.floorDecimal(shitsPercent * 100, 3)}%\n'
+			    + 'Sad: ${Highscore.floorDecimal(sadsPercent * 100, 3)}%\n'
+			    + 'Judgement percent text by Fearester';
 		}
 		
 		scoreTxt.text = 'Score: ' + songScore
@@ -2952,8 +2958,7 @@ class PlayState extends MusicBeatState
 			iconP1.swapOldIcon();
 		}*/
 		if (ClientPrefs.drainType == 'Always' && healthBar.percent > 20){
-		    
-		health -= 0.002 * ClientPrefs.healthDrain;
+			health -= 0.002 * ClientPrefs.healthDrain;
 		}
 		callOnLuas('onUpdate', [elapsed]);
 
@@ -3189,18 +3194,22 @@ class PlayState extends MusicBeatState
 					if (secondsTotal >= Math.floor(songLength / 1000))
 					secondsTotal = Math.floor(songLength / 1000);
 
-					if(ClientPrefs.timeBarType != 'Song Name')
-					timeTxt.text = FlxStringUtil.formatTime(secondsTotal, false);
-					timeTxt.x = -165;
-					if(ClientPrefs.timeBarType == 'Song Percentage')
-					timeTxt.text = '(${Highscore.floorDecimal(songPercent * 100, 1)}%)';
-					timeTxt.x = -150;
-					if(ClientPrefs.timeBarType == 'Time Length')
-					timeTxt.text = '${FlxStringUtil.formatTime(secondsTotal, false)} - ${FlxStringUtil.formatTime(Math.floor(songLength / 1000), false)}';
-					timeTxt.x = -105;
-					if(ClientPrefs.timeBarType == 'Time Length Percent')
-					timeTxt.text = '(${Highscore.floorDecimal(songPercent * 100, 1)}%) - (${FlxStringUtil.formatTime(secondsTotal, false)} / ${FlxStringUtil.formatTime(Math.floor(songLength / 1000), false)})';
-                    timeTxt.x = -20;
+					if(ClientPrefs.timeBarType != 'Song Name') {
+						timeTxt.text = FlxStringUtil.formatTime(secondsTotal, false);
+						timeTxt.x = -165;
+					}
+					if(ClientPrefs.timeBarType == 'Song Percentage') {
+						timeTxt.text = '(${Highscore.floorDecimal(songPercent * 100, 1)}%)';
+						timeTxt.x = -150;
+					}
+					if(ClientPrefs.timeBarType == 'Time Length') {
+						timeTxt.text = '${FlxStringUtil.formatTime(secondsTotal, false)} - ${FlxStringUtil.formatTime(Math.floor(songLength / 1000), false)}';
+						timeTxt.x = -105;
+					}
+					if(ClientPrefs.timeBarType == 'Time Length Percent') {
+						timeTxt.text = '(${Highscore.floorDecimal(songPercent * 100, 1)}%) - (${FlxStringUtil.formatTime(secondsTotal, false)} / ${FlxStringUtil.formatTime(Math.floor(songLength / 1000), false)})';
+						timeTxt.x = -20;
+					}
 				}
 			}
 
@@ -5241,6 +5250,9 @@ class PlayState extends MusicBeatState
 				if(ratingPercent >= 1)
 				{
 					ratingName = ratingStuff[ratingStuff.length-1][0]; //Uses last string
+					if(greats <= 20)
+						ratingName =  'Perfect!'; // yeah...
+						
 				}
 				else
 				{
