@@ -1276,7 +1276,7 @@ class PlayState extends MusicBeatState
 		judgementCounter.scrollFactor.set();
 		judgementCounter.screenCenter(Y);
 		judgementCounter.text = 'Greats: ${greats}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nSads: ${sads}\nMisses: ${songMisses}\nJudgement Counter by\n KadeDev';
-		if (ClientPrefs.judgementCounter == true || !ClientPrefs.hideHud)
+		if (ClientPrefs.judgementCounterType != 'Disabled' || !ClientPrefs.hideHud)
 		{
 			add(judgementCounter);
 		}
@@ -1285,7 +1285,7 @@ class PlayState extends MusicBeatState
 		    judgementCounter.text = 'Great: ${Highscore.floorDecimal(greatsPercent * 100,2)}\nSick: ${Highscore.floorDecimal(sicksPercent * 100, 2)}%\nGood: ${Highscore.floorDecimal(goodsPercent * 100, 2)}%\nBad: ${Highscore.floorDecimal(badsPercent * 100, 2)}%\nShit: ${Highscore.floorDecimal(shitsPercent * 100, 2)}%\nSad: ${Highscore.floorDecimal(sadsPercent * 100, 2)}%\nJudgement percent text by\nFearester';
 		}
 
-		botplayTxt = new FlxText(0, 19 , FlxG.width, "AUTO PLAY", 28);
+		botplayTxt = new FlxText(0, 19, FlxG.width, "AUTO PLAY", 28);
 		botplayTxt.screenCenter(X);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 28, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
@@ -2409,8 +2409,17 @@ class PlayState extends MusicBeatState
 		badsPercent = (bads / noteHit);
 		shitsPercent = (shits / noteHit);
 		sadsPercent = (sads / noteHit);
-		
-	    judgementCounter.text = 'Greats: ${greats}\nSicks: ${sicks}\nGoods: ${goods}\nBads: ${bads}\nShits: ${shits}\nSads: ${sads}\nMisses: ${songMisses}\njudgement text by kadeDev.';
+
+		if(ClientPrefs.judgementCounterType != 'Disabled') {
+			judgementCounter.text = 'Greats: ${greats}\n'
+				+ 'Sicks: ${sicks}\n'
+				+ 'Goods: ${goods}\n'
+				+ 'Bads: ${bads}\n'
+			+ 'Shits: ${shits}\n'
+			+ 'Sads: ${sads}\n'
+			+ 'Misses: ${songMisses}\n'
+			+ 'judgement text by kadeDev.';
+
         if (ClientPrefs.judgementCounterType == "Percentage")
 		{
 		    judgementCounter.text = 'Great: ${Highscore.floorDecimal(greatsPercent * 100, 3)}%\n'
@@ -2420,6 +2429,7 @@ class PlayState extends MusicBeatState
 			    + 'Shit: ${Highscore.floorDecimal(shitsPercent * 100, 3)}%\n'
 			    + 'Sad: ${Highscore.floorDecimal(sadsPercent * 100, 3)}%\n'
 			    + 'Judgement percent text by Fearester';
+		}
 		}
 		
 		scoreTxt.text = 'Score: ' + songScore
