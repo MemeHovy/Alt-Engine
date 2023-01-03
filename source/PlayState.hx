@@ -279,6 +279,7 @@ class PlayState extends MusicBeatState
 	var judgementCounter:FlxText;
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
+	var RateTween:FlxTween;
 
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
@@ -4155,11 +4156,14 @@ class PlayState extends MusicBeatState
 		rating.screenCenter();
 		rating.x = coolText.x - 40;
 		rating.y -= 60;
-		rating.scale.x = 1.095;
-		rating.scale.y = 1.095;
 		rating.acceleration.x = 550;
-		rating.velocity.y -= FlxG.random.int(140, 175);
-		rating.velocity.x -= FlxG.random.int(0, 10);
+		rating.scale.x = 1.485;
+		rating.scale.y = 1.485;
+		RateTween = FlxTween.tween(rating.scale, {x: 1, y: 1}, 0.2, {
+				onComplete: function(twn:FlxTween) {
+					RateTween = null;
+				}
+			});
 		rating.visible = (!ClientPrefs.hideHud && showRating);
 		rating.x += ClientPrefs.comboOffset[0];
 		rating.y -= ClientPrefs.comboOffset[1];
@@ -4235,7 +4239,6 @@ class PlayState extends MusicBeatState
 			numScore.screenCenter();
 			numScore.x = coolText.x + (43 * daLoop) - 90;
 			numScore.y += 80;
-
 			numScore.x += ClientPrefs.comboOffset[2];
 			numScore.y -= ClientPrefs.comboOffset[3];
 
@@ -4250,10 +4253,11 @@ class PlayState extends MusicBeatState
 			}
 			numScore.updateHitbox();
 
-			numScore.acceleration.y = FlxG.random.int(200, 300);
-			numScore.velocity.y -= FlxG.random.int(140, 160);
-			numScore.velocity.x = FlxG.random.float(-5, 5);
+			numScore.acceleration.x = FlxG.random.int(100, 200);
 			numScore.visible = !ClientPrefs.hideHud;
+            
+            if (!ClientPrefs.comboStacking)
+			lastScore.push(numScore);
 
 			//if (combo >= 10 || combo == 0)
 			if(showComboNum)
