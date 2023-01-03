@@ -67,12 +67,12 @@ class ClientPrefs {
 
 	public static var comboOffset:Array<Int> = [0, 0, 0, 0];
 	public static var ratingOffset:Int = 0;
-        public static var greatWindow:Int = 30;
+	public static var greatWindow:Int = 30;
 	public static var sickWindow:Int = 45;
 	public static var goodWindow:Int = 90;
 	public static var badWindow:Int = 135;
-        public static var shitWindow:Int = 160;
-        public static var sadWindow:Int = 190;
+	public static var shitWindow:Int = 160;
+	public static var sadWindow:Int = 190;
 	public static var safeFrames:Float = 10;
 
 	//Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
@@ -108,7 +108,7 @@ class ClientPrefs {
 	}
 
 	public static function saveSettings() {
-                FlxG.save.data.drainType = drainType;
+		FlxG.save.data.drainType = drainType;
 		FlxG.save.data.downScroll = downScroll;
 		FlxG.save.data.middleScroll = middleScroll;
 		FlxG.save.data.opponentStrums = opponentStrums;
@@ -138,7 +138,7 @@ class ClientPrefs {
 		FlxG.save.data.ghostTapping = ghostTapping;
 		FlxG.save.data.timeBarType = timeBarType;
 		FlxG.save.data.scoreZoom = scoreZoom;
-		FlxG.save.data.comboStacking = comboOffset;
+		FlxG.save.data.comboStacking = comboStacking;
 		FlxG.save.data.noReset = noReset;
 		FlxG.save.data.healthBarAlpha = healthBarAlpha;
 		FlxG.save.data.comboOffset = comboOffset;
