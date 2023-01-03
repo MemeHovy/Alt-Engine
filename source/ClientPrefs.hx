@@ -28,7 +28,6 @@ class ClientPrefs {
 	public static var winIcon:Bool = false;
 	public static var beatMode:String = 'Both camera';
 	public static var beatType:String = '1/16';
-	public static var judgementCounter:Bool = false;
 	public static var judgementCounterType:String = 'Default';
 	public static var healthDrain:Float = 0;
 	public static var noteOffset:Int = 0;
@@ -129,7 +128,6 @@ class ClientPrefs {
 		FlxG.save.data.instVolume = instVolume;
 		FlxG.save.data.mainVolume = mainVolume;
 		FlxG.save.data.winIcon = winIcon;
-		FlxG.save.data.judgementCounter = judgementCounter;
 		FlxG.save.data.judgementCounterType = judgementCounterType;
 		FlxG.save.data.beatMode = beatMode;
 		FlxG.save.data.beatType = beatType;
@@ -236,9 +234,6 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.winIcon != null) {
 			winIcon = FlxG.save.data.winIcon;
-		}
-        if(FlxG.save.data.judgementCounter != null) {
-			judgementCounter = FlxG.save.data.judgementCounter;
 		}
 		if(FlxG.save.data.judgementCounterType != null) {
 			judgementCounterType = FlxG.save.data.judgementCounterType;
