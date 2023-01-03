@@ -1083,7 +1083,7 @@ class PlayState extends MusicBeatState
 
 		var showTime:Bool = (ClientPrefs.timeBarType != 'Disabled');
 		timeTxt = new FlxText(0, 680 , 400, "", 28);
-		timeTxt.setFormat(Paths.font("vcr.ttf"), 28, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		timeTxt.setFormat(Paths.font("vcr.ttf"), 28, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		timeTxt.scrollFactor.set();
 		timeTxt.alpha = 0;
 		timeTxt.borderSize = 2;
@@ -1115,6 +1115,11 @@ class PlayState extends MusicBeatState
 		{
 		timeBar = new FlxBar(0, 705, RIGHT_TO_LEFT, 1280, 20, this,
 			'songPercent', 0, 1);
+		}
+		if(ClientPrefs.downScroll)
+		{
+		    timeBar.y = 0;
+		    timeTxt.screenCenter(X);
 		}
 		timeBar.scrollFactor.set();
 		timeBar.screenCenter(X);
@@ -1280,12 +1285,12 @@ class PlayState extends MusicBeatState
 		    judgementCounter.text = 'Great: ${Highscore.floorDecimal(greatsPercent * 100,2)}\nSick: ${Highscore.floorDecimal(sicksPercent * 100, 2)}%\nGood: ${Highscore.floorDecimal(goodsPercent * 100, 2)}%\nBad: ${Highscore.floorDecimal(badsPercent * 100, 2)}%\nShit: ${Highscore.floorDecimal(shitsPercent * 100, 2)}%\nSad: ${Highscore.floorDecimal(sadsPercent * 100, 2)}%\nJudgement percent text by\nFearester';
 		}
 
-		botplayTxt = new FlxText(0, timeBar.y - 25 , FlxG.width, "AUTO PLAY", 28);
+		botplayTxt = new FlxText(0, 19 , FlxG.width, "AUTO PLAY", 28);
 		botplayTxt.screenCenter(X);
-		botplayTxt.setFormat(Paths.font("vcr.ttf"), 26, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		botplayTxt.setFormat(Paths.font("vcr.ttf"), 28, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
 		botplayTxt.borderSize = 1.25;
-		botplayTxt.visible = false;
+		botplayTxt.visible = cpuControlled;
 		add(botplayTxt);
 		if(ClientPrefs.downScroll) {
 			botplayTxt.y = 430;
@@ -3104,7 +3109,6 @@ class PlayState extends MusicBeatState
 		setOnLuas('curDecBeat', curDecBeat);
 
 		if(botplayTxt.visible) {
-		    botplayTxt.visible = true;
 			botplaySine += 180 * elapsed;
 			botplayTxt.alpha = 1 - Math.sin((Math.PI * botplaySine) / 180);
 		}
@@ -4156,9 +4160,9 @@ class PlayState extends MusicBeatState
 		rating.screenCenter();
 		rating.x = coolText.x - 40;
 		rating.y -= 60;
-		rating.acceleration.x = 550;
-		rating.scale.x = 1.485;
-		rating.scale.y = 1.485;
+		rating.acceleration.x = -550;
+		rating.scale.x = 1.105;
+		rating.scale.y = 1.105;
 		RateTween = FlxTween.tween(rating.scale, {x: 1, y: 1}, 0.2, {
 				onComplete: function(twn:FlxTween) {
 					RateTween = null;
@@ -4172,7 +4176,7 @@ class PlayState extends MusicBeatState
 		comboSpr.cameras = [camHUD];
 		comboSpr.screenCenter();
 		comboSpr.x = coolText.x;
-		comboSpr.acceleration.x = FlxG.random.int(100, 300);
+		comboSpr.acceleration.x = FlxG.random.int(-100, -300);
 		comboSpr.velocity.y -= FlxG.random.int(140, 160);
 		comboSpr.visible = (!ClientPrefs.hideHud && showCombo);
 		comboSpr.x += ClientPrefs.comboOffset[0];
@@ -4253,7 +4257,7 @@ class PlayState extends MusicBeatState
 			}
 			numScore.updateHitbox();
 
-			numScore.acceleration.x = FlxG.random.int(100, 200);
+			numScore.acceleration.x = FlxG.random.int(-100, -200);
 			numScore.visible = !ClientPrefs.hideHud;
             
             if (!ClientPrefs.comboStacking)
