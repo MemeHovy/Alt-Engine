@@ -57,18 +57,11 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 		
 		var option:Option = new Option('judgement Text Type:',
-			"What should the judge display?",
+			"What should the Judge display?",
 			'judgementCounterType',
 			'string',
 			'Default',
-			['Default', 'Percentage']);
-		addOption(option);
-		
-		var option:Option = new Option('Judgement Text Visible',
-			"Show Judgement Text?!",
-			'judgementCounter',
-			'bool',
-			true);
+			['Default', 'Percentage', 'None']);
 		addOption(option);
 
 		var option:Option = new Option('Flashing Lights',
@@ -77,8 +70,6 @@ class VisualsUISubState extends BaseOptionsMenu
 			'bool',
 			true);
 		addOption(option);
-		
-		
 
 		var option:Option = new Option('Camera Zooms',
 			"If unchecked, the camera won't zoom in on a beat hit.",
