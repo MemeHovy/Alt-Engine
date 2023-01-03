@@ -53,15 +53,15 @@ class VisualsUISubState extends BaseOptionsMenu
 			'timeBarType',
 			'string',
 			'Time Elapsed / Song Length',
-			['Time Length Percent' ,'Repeat Bar', 'Time Length', 'Song Percentage', 'Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
+			['Time Length Percent', 'Repeat Bar', 'Time Length', 'Song Percentage', 'Time Left', 'Time Elapsed', 'Song Name', 'Disabled']);
 		addOption(option);
 		
-		var option:Option = new Option('judgement Text Type:',
+		var option:Option = new Option('Judgement Text Type:',
 			"What should the Judge display?",
 			'judgementCounterType',
 			'string',
 			'Default',
-			['Default', 'Percentage', 'None']);
+			['Default', 'Percentage', 'Disabled']);
 		addOption(option);
 
 		var option:Option = new Option('Flashing Lights',
