@@ -208,7 +208,7 @@
 
 	<!--Audio Recording Fix-->
 	<section if="android">
-	<config:android target-sdk-version="29" if="${lime <= 8.0.0}" />
+	<config:android target-sdk-version="30" if="${lime <= 8.0.0}" />
 	</section>
 	
 	<!-- _________________________________ Custom _______________________________ -->
