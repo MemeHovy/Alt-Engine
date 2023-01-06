@@ -13,19 +13,20 @@ import lime.system.System as LimeSystem;
 import openfl.Lib;
 import openfl.events.UncaughtErrorEvent;
 import openfl.utils.Assets;
-
-using StringTools;
-
-#if (sys && !ios)
+#if sys
 import sys.FileSystem;
 import sys.io.File;
+#else
+import haxe.Log;
 #end
+
+using StringTools;
 
 enum StorageType
 {
 	ANDROID_DATA;
 	ROOT;
-	APP;
+	APP_DATA
 }
 
 /**
@@ -124,7 +125,7 @@ class SUtil
 			case ROOT:
 				daPath = Context.getFilesDir() + '/';
 			case APP_DATA:
-			    daPath = Environment.getExternalStorageDirectory() + '/' + '.' + Lib.application.meta.get('file') + MainMenuState.altEngineVersion + '/'; #else return ''; #end
+			daPath = Environment.getExternalStorageDirectory() + '/' + '.' + Lib.application.meta.get('file') + MainMenuState.altEngineVersion + '/';
 		}
 		//if (!FileSystem.exists(SUtil.getPath() + Path.directory(daPath)))
 			//SUtill.copyContent(Path.directory(daPath), Path.directory(daPath)); //this shit was made by an undertale fan and its prob not gonna work
