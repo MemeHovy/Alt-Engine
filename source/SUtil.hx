@@ -26,7 +26,7 @@ enum StorageType
 {
 	ANDROID_DATA;
 	ROOT;
-	APP_DATA
+	APP_DATA;
 }
 
 /**
@@ -113,7 +113,7 @@ class SUtil
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
-	public static function getPath(type:StorageType = ANDROID_DATA):String
+	public static function getPath(type:StorageType = APP_DATA):String
 	{
 		#if android
 		var daPath:String = '';
