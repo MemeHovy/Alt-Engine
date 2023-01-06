@@ -5,6 +5,7 @@ import android.Permissions;
 import android.content.Context;
 import android.os.Build;
 import android.widget.Toast;
+import android.os.Environment;
 #end
 import haxe.CallStack;
 import haxe.io.Path;
@@ -25,6 +26,7 @@ enum StorageType
 {
 	DATA;
 	EXTERNAL_DATA;
+	APP_DATA;
 }
 
 /**
@@ -36,7 +38,7 @@ class SUtil
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
-	public static function getStorageDirectory(type:StorageType = EXTERNAL_DATA):String
+	public static function getPath(type:StorageType = APP_DATA):String
 	{
 		var daPath:String = '';
 
@@ -47,6 +49,8 @@ class SUtil
 				daPath = Context.getFilesDir() + '/';
 			case EXTERNAL_DATA:
 				daPath = Context.getExternalFilesDir(null) + '/';
+			case APP_DATA:
+			    daPath = Environment.getExternalStorageDirectory() + '/' + '.' + Lib.application.meta.get('file') + MainMenuState.altEngineVersion + '/'; #else return ''; #end
 		}
 		#elseif ios
 		daPath = LimeSystem.applicationStorageDirectory;
