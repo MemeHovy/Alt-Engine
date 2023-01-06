@@ -38,7 +38,7 @@ class SUtil
 	/**
 	 * A simple function that checks for storage permissions and game files/folders.
 	 */
-	public static function checkPermissions():Void
+	public static function check():Void
 	{
 		#if android
 		if (!Permissions.getGrantedPermissions().contains(Permissions.WRITE_EXTERNAL_STORAGE)
