@@ -22,6 +22,12 @@ import Achievements;
 import editors.MasterEditorMenu;
 import flixel.input.keyboard.FlxKey;
 import haxe.Json;
+#if android
+import android.flixel.FlxButton;
+#else
+import flixel.ui.FlxButton;
+#end
+
 #if MODS_ALLOWED
 import sys.FileSystem;
 import sys.io.File;
@@ -43,8 +49,7 @@ typedef MenuData =
     creditsS:Array<Float>,
     optionsS:Array<Float>,
     centerX:Bool,
-    menuBG:String,
-    Tweens:Bool
+    menuBG:String
 }
 
 class MainMenuState extends MusicBeatState
@@ -71,7 +76,7 @@ class MainMenuState extends MusicBeatState
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
-
+	
 	override function create()
 	{
         
@@ -104,7 +109,7 @@ class MainMenuState extends MusicBeatState
 		MainJSON = Json.parse(Paths.getTextFromFile('UI Jsons/MainMenuData.json'));
 
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image(MainJSON.menuBG));
+		public var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image(MainJSON.menuBG));
 		bg.scrollFactor.set(0, yScroll);
 		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
@@ -295,6 +300,18 @@ class MainMenuState extends MusicBeatState
 		#if android
 		addVirtualPad(UP_DOWN, A_B_X_Y);
 		virtualPad.y = -44;
+		
+		var editorsButton:FlxButton = new FlxButton(0, 650, "Editors", function() {
+			MusicBeatState.switchState(new editors.MasterEditorMenu());
+		});
+		editorsButton.screenCenter(X);
+		add(editorsButton);
+		var exitButton:FlxButton = new FlxButton(0, 650, "Exit Game", function() {
+			MusicBeatState.switchState(new ExitGame());
+		});
+		exitButton.screenCenter(X);
+		exitButton.x -= 120;
+		add(exitButton);
 		#end
     }
 		super.create();
@@ -317,8 +334,8 @@ class MainMenuState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
-	var canClick:Bool = true;
-	var usingMouse:Bool = ClientPrefs.mouseControls;
+	public var canClick:Bool = true;
+	public var usingMouse:Bool = ClientPrefs.mouseControls;
 
 		var lerpVal:Float = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
@@ -511,20 +528,22 @@ class MainMenuState extends MusicBeatState
 							var daChoice:String = optionShit[curSelected];
 
 							switch (daChoice)
-							{
-								case 'story_mode':
-									MusicBeatState.switchState(new StoryMenuState());
-								case 'freeplay':
-									MusicBeatState.switchState(new FreeplaySectionState());
-								case 'credits':
-									MusicBeatState.switchState(new CreditsState());
-								case 'options':
-									LoadingState.loadAndSwitchState(new options.OptionsState());
-								case 'patch':
-									MusicBeatState.switchState(new PatchState());
-								case 'soundtest':
-									MusicBeatState.switchState(new SoundTestState());
-							}
+								{
+									case 'story_mode':
+										MusicBeatState.switchState(new StoryMenuState());
+									case 'freeplay':
+										MusicBeatState.switchState(new FreeplayState());
+									#if MODS_ALLOWED
+									case 'mods':
+										MusicBeatState.switchState(new ModsMenuState());
+									#end
+									case 'awards':
+										MusicBeatState.switchState(new AchievementsMenuState());
+									case 'credits':
+										MusicBeatState.switchState(new CreditsState());
+									case 'options':
+										LoadingState.loadAndSwitchState(new options.OptionsState());
+								}
 						});
 					}
 				});
