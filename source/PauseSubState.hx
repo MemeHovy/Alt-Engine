@@ -20,8 +20,7 @@ class PauseSubState extends MusicBeatSubstate
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = [];
-	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty' #if android, 'Chart Editor' #end, 'Exit to menu'];
-	var difficultyChoices = [];
+    var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Configure Settings', 'Exit to menu'];	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
 	var pauseMusic:FlxSound;
@@ -237,6 +236,12 @@ class PauseSubState extends MusicBeatSubstate
 					restartSong();
 				case 'Restart Replay':
 					FlxG.resetState();
+				case "Configure Settings":
+					PlayState.seenCutscene = true;
+					options.OptionsState.fromPlayState = true;
+					MusicBeatState.switchState(new options.OptionsState());
+					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+					FlxG.sound.music.fadeIn(2, 0, 1);
 				case "Leave Charting Mode":
 					restartSong();
 					PlayState.chartingMode = false;
