@@ -85,7 +85,7 @@ class GraphicsSettingsSubState extends BaseOptionsMenu
 			'1280x720',
 			['640x360', '852x480', '960x540', '1280x720', '1960x1080', '3840x2160', '7680x4320']);
 		addOption(option);
-		option.onChange = onChangeScreenRes; #end
+		option.onChange = onChangeScreenRes;
 
 		super();
 	}
