@@ -68,11 +68,6 @@ class OptionsState extends MusicBeatState
 				removeVirtualPad();
 				#end
 				openSubState(new options.VolumeOptionsSubState());
-                        case 'GPU Info':
-                                #if android
-                                removeVirtualPad();
-                                #end
-                                openSubState(new options.GPUSubState());
 		}
 	}
 
@@ -80,7 +75,7 @@ class OptionsState extends MusicBeatState
 	var selectorRight:Alphabet;
 
 	override function create() {
-
+	    
         Paths.clearStoredMemory();
 	Paths.clearUnusedMemory();
 
