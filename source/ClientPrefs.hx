@@ -28,7 +28,7 @@ class ClientPrefs {
 	public static var winIcon:Bool = false;
 	public static var beatMode:String = 'Both camera';
 	public static var beatType:String = '1/16';
-	public static var mouseControls:Bool = #if android true #else false;
+	public static var mouseControls:Bool = #if android true #else false #end;
 	public static var judgementCounter:Bool = false;
 	public static var judgementCounterType:String = 'Default';
 	public static var healthDrain:Float = 0;
