@@ -1161,10 +1161,10 @@ class FunkinLua {
 			}
 		});
 		
-		Lua_helper.add_callback(lua, "doTweenLength", function(tag:String, vars:String, value:Dynamic, duration:Float, ease:String) {
+		Lua_helper.add_callback(lua, "doTweenLength", function(tag:String, value:Dynamic, duration:Float, ease:String) {
 			var penisExam:Dynamic = tweenShit(tag, vars);
 			if(penisExam != null) {
-				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(FlxG.sound.music.length, {songLength: value}, duration, {ease: getFlxEaseByString(ease),
+				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(PlayState, {songLength: value}, duration, {ease: getFlxEaseByString(ease),
 					onComplete: function(twn:FlxTween) {
 						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
 						PlayState.instance.modchartTweens.remove(tag);
@@ -3422,8 +3422,8 @@ class HScript
 		interp.variables.set('FlxTimer', FlxTimer);
 		interp.variables.set('FlxTween', FlxTween);
 		interp.variables.set('FlxEase', FlxEase);
-		interp.variables.set('PlayState.instance', PlayState);
-		interp.variables.set('PlayState', PlayState.instance);
+		interp.variables.set('PlayState', PlayState);
+		interp.variables.set('game', PlayState.instance);
 		interp.variables.set('Paths', Paths);
 		interp.variables.set('Conductor', Conductor);
 		interp.variables.set('ClientPrefs', ClientPrefs);
