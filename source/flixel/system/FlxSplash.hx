@@ -12,7 +12,7 @@ import flixel.tweens.FlxTween;
 import flixel.system.FlxSound;
 import flixel.system.FlxBasePreloader;
  
-class Preloader extends FlxBasePreloader
+class FlxSplash extends FlxBasePreloader
 {
     public function new(MinDisplayTime:Float= 5, ?AllowedURLs:Array<String>) 
     {
