@@ -1160,6 +1160,21 @@ class FunkinLua {
 				luaTrace('Couldnt find object: ' + vars, false, false, FlxColor.RED);
 			}
 		});
+		
+		Lua_helper.add_callback(lua, "doTweenLength", function(tag:String, vars:String, value:Dynamic, duration:Float, ease:String) {
+			var penisExam:Dynamic = tweenShit(tag, vars);
+			if(penisExam != null) {
+				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(FlxG.sound.music.length, {songLength: value}, duration, {ease: getFlxEaseByString(ease),
+					onComplete: function(twn:FlxTween) {
+						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
+						PlayState.instance.modchartTweens.remove(tag);
+					}
+				}));
+			} else {
+				luaTrace('Couldnt find object: ' + vars, false, false, FlxColor.RED);
+			}
+		});
+		
 		Lua_helper.add_callback(lua, "doTweenZoom", function(tag:String, vars:String, value:Dynamic, duration:Float, ease:String) {
 			var penisExam:Dynamic = tweenShit(tag, vars);
 			if(penisExam != null) {
@@ -2031,16 +2046,6 @@ class FunkinLua {
 			Reflect.getProperty(getInstance(), group)[index].updateHitbox();
 		});
 
-		Lua_helper.add_callback(lua, "isNoteChild", function(parentID:Int, childID:Int){
-			var parent: Note = cast PlayState.instance.getLuaObject('note${parentID}',false);
-			var child: Note = cast PlayState.instance.getLuaObject('note${childID}',false);
-			if(parent!=null && child!=null)
-				return parent.tail.contains(child);
-
-			luaTrace('${parentID} or ${childID} is not a valid note ID', false, false, FlxColor.RED);
-			return false;
-		});
-
 		Lua_helper.add_callback(lua, "removeLuaSprite", function(tag:String, destroy:Bool = true) {
 			if(!PlayState.instance.modchartSprites.exists(tag)) {
 				return;
@@ -2601,6 +2606,7 @@ class FunkinLua {
 			return Assets.exists(Paths.getPath('assets/$filename', TEXT));
 			#end
 		});
+		
 		Lua_helper.add_callback(lua, "saveFile", function(path:String, content:String, ?absolute:Bool = false)
 		{
 			try {
@@ -2615,6 +2621,7 @@ class FunkinLua {
 			}
 			return false;
 		});
+		
 		Lua_helper.add_callback(lua, "deleteFile", function(path:String, ?ignoreModFolders:Bool = false)
 		{
 			try {
@@ -2641,6 +2648,7 @@ class FunkinLua {
 			}
 			return false;
 		});
+		
 		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String, ?ignoreModFolders:Bool = false) {
 			return Paths.getTextFromFile(path, ignoreModFolders);
 		});
@@ -3414,8 +3422,8 @@ class HScript
 		interp.variables.set('FlxTimer', FlxTimer);
 		interp.variables.set('FlxTween', FlxTween);
 		interp.variables.set('FlxEase', FlxEase);
-		interp.variables.set('PlayState', PlayState);
-		interp.variables.set('game', PlayState.instance);
+		interp.variables.set('PlayState.instance', PlayState);
+		interp.variables.set('PlayState', PlayState.instance);
 		interp.variables.set('Paths', Paths);
 		interp.variables.set('Conductor', Conductor);
 		interp.variables.set('ClientPrefs', ClientPrefs);
