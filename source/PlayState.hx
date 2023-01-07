@@ -276,6 +276,8 @@ class PlayState extends MusicBeatState
 	public var songHits:Int = 0;
 	public var songMisses:Int = 0;
 	public var scoreTxt:FlxText;
+	var iconZoomTween:FlxTween;
+	var iconDadZoomTween:FlxTween;
 	var judgementCounter:FlxText;
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
@@ -4515,6 +4517,50 @@ class PlayState extends MusicBeatState
 		return ret;
 	}
 
+        function moveIcon(?isDad:Bool = false)
+	{
+		if(isDad == false)
+		{
+			if(iconZoomTween != null) {
+				iconZoomTween.cancel();
+			}
+			iconP1.y = healthBar.y - 85;
+			iconZoomTween = FlxTween.tween(iconP1, {y: healthBar.y - 90}, 0.1, {
+				ease: FlxEase.cubeInOut,
+				onComplete: function(twn:FlxTween)
+				{
+					iconZoomTween = FlxTween.tween(iconP1, {y: healthBar.y - 75}, (Conductor.crochet / 1000), {
+						ease: FlxEase.cubeInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							iconZoomTween = null;
+						}
+					});
+				}
+			});
+		}
+		else
+		{
+			if(iconDadZoomTween != null) {
+				iconDadZoomTween.cancel();
+			}
+		    iconP2.y = healthBar.y - 85;
+		    iconDadZoomTween = FlxTween.tween(iconP2, {y: healthBar.y - 90}, 0.1, {
+				ease: FlxEase.cubeInOut,
+				onComplete: function(twn:FlxTween)
+				{
+					iconDadZoomTween = FlxTween.tween(iconP2, {y: healthBar.y - 75}, (Conductor.crochet / 1000), {
+						ease: FlxEase.cubeInOut,
+						onComplete: function(twn:FlxTween)
+						{
+							iconDadZoomTween = null;
+						}
+					});
+				}
+			});
+		}
+	}
+
 	function noteMiss(daNote:Note):Void { //You didn't hit the key and let it go offscreen, also used by Hurt Notes
 		notes.forEachAlive(function(note:Note) {
 			if (daNote != note && daNote.mustPress && daNote.noteData == note.noteData && daNote.isSustainNote == note.isSustainNote && Math.abs(daNote.strumTime - note.strumTime) < 1) {
@@ -4638,6 +4684,11 @@ class PlayState extends MusicBeatState
 
 		if (SONG.needsVoices)
 			vocals.volume = ClientPrefs.vocalVolume;
+		
+		if(!note.isSustainNote)
+		{
+			moveIcon(true);
+		}
 
 		var time:Float = 0.15;
 		if(note.isSustainNote && !note.animation.curAnim.name.endsWith('end')) {
@@ -4692,6 +4743,11 @@ class PlayState extends MusicBeatState
 					note.destroy();
 				}
 				return;
+			}
+							
+		        if(!note.isSustainNote)
+			{
+				moveIcon();
 			}
 
 			if (!note.isSustainNote)
