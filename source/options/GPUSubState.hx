@@ -33,17 +33,49 @@ using StringTools;
 
 class GPUSubState extends BaseOptionsMenu
 {
+    public var Frames(default,null):Int;
+    
+	@:noCompletion private var cacheCount:Int;
+	@:noCompletion private var currentTime:Float;
+	@:noCompletion private var times:Array<Float>;
+
 	public function new()
 	{
 		title = 'GPU Info';
 		rpcTitle = 'GPU Info'; //for Discord Rich Presence
-	   public var FPS:Int = 0;
 	   super();
+	   
+	    Frames = 0;
+	   	cacheCount = 0;
+		currentTime = 0;
+		times = [];
+
+		#if flash
+		addEventListener(Event.ENTER_FRAME, function(e)
+		{
+			var time = Lib.getTimer();
+			__enterFrame(time - currentTime);
+		});
+		#end
 	}
-	
+	private #if !flash override #end function __enterFrame(deltaTime:Float):Void
+	{
+		currentTime += deltaTime;
+		times.push(currentTime);
+
+		while (times[0] < currentTime - 1000)
+		{
+			times.shift();
+		}
+
+		var currentCount = times.length;
+		Frames = Math.round((currentCount + cacheCount) / 2);
+		if (Frames > ClientPrefs.framerate) Frames = ClientPrefs.framerate;
+    }
+
     override function update(elapsed:Float)
     {
-        Frames = FPS.currentFPS;
+        
         var FPSBar:FlxBar;
         FPSBar = new FlxBar(0, 620, LEFT_TO_RIGHT, Std.int(1280 / 2), 20, this, 'Frames', 0, ClientPrefs.framerate);
 		FPSBar.scrollFactor.set();
@@ -51,7 +83,7 @@ class GPUSubState extends BaseOptionsMenu
 		FPSBar.createFilledBar(0xFF000000, 0xFF80FF00);
 		FPSBar.numDivisions = 800; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
 		FPSBar.visible = true;
-                add(FPSBar);
+        add(FPSBar);
         super.update();
     }
 }
