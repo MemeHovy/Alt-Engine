@@ -276,6 +276,8 @@ class PlayState extends MusicBeatState
 	public var songHits:Int = 0;
 	public var songMisses:Int = 0;
 	public var scoreTxt:FlxText;
+	var iconZoomTween:FlxTween;
+	var iconDadZoomTween:FlxTween;
 	var judgementCounter:FlxText;
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
@@ -4523,11 +4525,11 @@ class PlayState extends MusicBeatState
 				iconZoomTween.cancel();
 			}
 			iconP1.y = healthBar.y - 85;
-			iconZoomTween = FlxTween.tween(iconP1, {y: healthBar.y - 90}, 0.1 / playbackRate, {
+			iconZoomTween = FlxTween.tween(iconP1, {y: healthBar.y - 90}, 0.1, {
 				ease: FlxEase.cubeInOut,
 				onComplete: function(twn:FlxTween)
 				{
-					iconZoomTween = FlxTween.tween(iconP1, {y: healthBar.y - 75}, (Conductor.crochet / 1000) / playbackRate, {
+					iconZoomTween = FlxTween.tween(iconP1, {y: healthBar.y - 75}, (Conductor.crochet / 1000), {
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
 						{
@@ -4543,11 +4545,11 @@ class PlayState extends MusicBeatState
 				iconDadZoomTween.cancel();
 			}
 		    iconP2.y = healthBar.y - 85;
-		    iconDadZoomTween = FlxTween.tween(iconP2, {y: healthBar.y - 90}, 0.1 / playbackRate, {
+		    iconDadZoomTween = FlxTween.tween(iconP2, {y: healthBar.y - 90}, 0.1, {
 				ease: FlxEase.cubeInOut,
 				onComplete: function(twn:FlxTween)
 				{
-					iconDadZoomTween = FlxTween.tween(iconP2, {y: healthBar.y - 75}, (Conductor.crochet / 1000) / playbackRate, {
+					iconDadZoomTween = FlxTween.tween(iconP2, {y: healthBar.y - 75}, (Conductor.crochet / 1000), {
 						ease: FlxEase.cubeInOut,
 						onComplete: function(twn:FlxTween)
 						{
