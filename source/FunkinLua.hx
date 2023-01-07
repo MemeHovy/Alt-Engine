@@ -1162,7 +1162,7 @@ class FunkinLua {
 		});
 		
 		Lua_helper.add_callback(lua, "doTweenLength", function(tag:String, value:Dynamic, duration:Float, ease:String) {
-			var penisExam:Dynamic = tweenShit(tag, vars);
+			var penisExam:Dynamic = tweenShit(tag);
 			if(penisExam != null) {
 				PlayState.instance.modchartTweens.set(tag, FlxTween.tween(PlayState, {songLength: value}, duration, {ease: getFlxEaseByString(ease),
 					onComplete: function(twn:FlxTween) {
@@ -1171,7 +1171,7 @@ class FunkinLua {
 					}
 				}));
 			} else {
-				luaTrace('Couldnt find object: ' + vars, false, false, FlxColor.RED);
+				luaTrace('', false, false, FlxColor.RED);
 			}
 		});
 		
@@ -3422,8 +3422,8 @@ class HScript
 		interp.variables.set('FlxTimer', FlxTimer);
 		interp.variables.set('FlxTween', FlxTween);
 		interp.variables.set('FlxEase', FlxEase);
-		interp.variables.set('PlayState', PlayState);
-		interp.variables.set('game', PlayState.instance);
+		interp.variables.set('PlayState.instance', PlayState);
+		interp.variables.set('PlayState', PlayState.instance);
 		interp.variables.set('Paths', Paths);
 		interp.variables.set('Conductor', Conductor);
 		interp.variables.set('ClientPrefs', ClientPrefs);
