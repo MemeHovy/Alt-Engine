@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': SB Engine" file="SB Engine" packageName="com.stefan2008.sbengine" package="com.stefan2008.sbengine" main="Main" version="0.2.8" company="Stefan2008" />
+	<app title="Friday Night Funkin': Alt Engine" file="AltEngine" packageName="com.fearester.altengine" package="com.fearester.altengine" main="Main" version="0.2.8" company="Fearester" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -46,6 +46,8 @@
 	<!-- PSYCH ENGINE CUSTOMIZATION -->
 	<define name="MODS_ALLOWED" if="desktop || android" />
 	<define name="LUA_ALLOWED" if="desktop || android" />
+	<define name="HSCRIPT_ALLOWED" />
+	<define name="SCRIPT_EXTENSION" />
 	<define name="ACHIEVEMENTS_ALLOWED" />
 	<define name="VIDEOS_ALLOWED" if="web || windows || android" unless="32bits"/>
 	<define name="PSYCH_WATERMARKS" /> <!-- DELETE THIS TO REMOVE WATERMARKS/DEV NAMES ON TITLE SCREEN -->
@@ -67,6 +69,9 @@
 	<!-- <define name="PRELOAD_ALL" /> -->
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
+
+        <define name="FUTURE_DISCORD_RCP" if="desktop" />
+	<define name="FUTURE_POLYMOD" if="desktop || android" />
 	
 	<library name="videos"        preload="true" />
 	<section if="PRELOAD_ALL">
@@ -130,17 +135,24 @@
 
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />
-	<haxelib name="hscript" />
+	<haxelib name="hscript" if="HSCRIPT_ALLOWED"/>
+	<haxelib name="hscript-ex" if="HSCRIPT_ALLOWED"/>
 	<define name="hscriptPos" />
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
 	<haxelib name="linc_luajit" if="LUA_ALLOWED"/>
 	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
+	<haxelib name="SScript" if="SCRIPT_EXTENSION"/>
 	<haxelib name="faxe" if='switch'/>
-	<haxelib name="discord_rpc" if="desktop"/>
-	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
+	<haxelib name="spinehaxe" />
+	<haxelib name="polymod-mastereric" rename="polymod" if="FUTURE_POLYMOD" />
+
+        <haxelib name="discord_rpc" if="FUTURE_DISCORD_RCP || desktop" />
+	<haxelib name="hxcpp-debug-server" if="debug"/>
 	<haxelib name="extension-androidtools" if="android"/>
+
+	<haxedef name="no-deprecation-warnings" />
 
 	<!-- <haxelib name="markdown" /> -->
 	<!-- <haxelib name="HtmlParser" /> -->
@@ -151,7 +163,7 @@
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->
-	<!--<haxedef name="FLX_RECORD" />-->
+	<!--<haxedef name="FLX_RECORD" /> -->
 
 	<!--Disable the right and middle mouse buttons-->
 	<!-- <haxedef name="FLX_NO_MOUSE_ADVANCED" /> -->
@@ -189,14 +201,6 @@
 	<!--Used for Izzy Engine's crash handler-->
 	<haxedef name="HXCPP_CHECK_POINTER" if="CRASH_HANDLER" />
 	<haxedef name="HXCPP_STACK_LINE" if="CRASH_HANDLER" />
-
-	<!--Allow working memory greater than 1 Gig-->
-	<haxedef name="HXCPP_GC_BIG_BLOCKS" />
-
-	<!--Always enable Null Object Reference check-->
-	<haxedef name="HXCPP_CHECK_POINTER" />
-	<haxedef name="HXCPP_STACK_LINE" />
-	<haxedef name="HXCPP_STACK_TRACE"/>
 
 		<!--Permissions-->
 		<config:android permission="android.permission.ACCESS_NETWORK_STATE" />
