@@ -68,6 +68,11 @@ class OptionsState extends MusicBeatState
 				removeVirtualPad();
 				#end
 				openSubState(new options.VolumeOptionsSubState());
+                        case 'GPU Info':
+                                #if android
+                                removeVirtualPad();
+                                #end
+                                openSubState(new options.GPUSubState());
 		}
 	}
 
