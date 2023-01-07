@@ -39,6 +39,7 @@ class ClientPrefs {
 	public static var scoreZoom:Bool = true;
 	public static var comboStacking:Bool = true;
 	public static var noReset:Bool = false;
+	public static var screenRes:String = '1280x720';
 	public static var healthBarAlpha:Float = 1;
 	public static var controllerMode:Bool = #if android true #else false #end;
 	public static var hitsoundVolume:Float = 0;
@@ -109,6 +110,7 @@ class ClientPrefs {
 	}
 
 	public static function saveSettings() {
+	    FlxG.save.data.screenRes = screenRes;
                 FlxG.save.data.drainType = drainType;
 		FlxG.save.data.downScroll = downScroll;
 		FlxG.save.data.middleScroll = middleScroll;
@@ -180,6 +182,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.middleScroll != null) {
 			middleScroll = FlxG.save.data.middleScroll;
+		}
+		if(FlxG.save.data.screenRes != null) {
+			screenRes = FlxG.save.data.screenRes;
 		}
 		if(FlxG.save.data.opponentStrums != null) {
 			opponentStrums = FlxG.save.data.opponentStrums;
