@@ -50,7 +50,7 @@ class FlxSplash extends FlxState
 		FlxG.keys.enabled = false;
 		#end
 
-		_times = [0.041, 0.184, 0.334, 0.495, 0.636];
+		_times = [0.039, 0.165, 0.302, 0.488, 0.631];
 		_colors = [0x00b922, 0xffc132, 0xf5274e, 0x3641ff, 0x04cdfb];
 		_functions = [drawGreen, drawYellow, drawRed, drawBlue, drawLightBlue];
 
@@ -80,7 +80,7 @@ class FlxSplash extends FlxState
 		#if FLX_SOUND_SYSTEM
 		if (!muted)
 		{
-			FlxG.sound.load(FlxAssets.getSound("flixel/sounds/flixel")).play();
+			FlxG.sound.load(Paths.music("start_screen")).play();
 		}
 		#end
 	}
