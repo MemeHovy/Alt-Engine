@@ -33,15 +33,15 @@ class FlxSplash extends FlxBasePreloader
          
         LogoBG = new FlxSprite(0,0).makeGraphic(FlxG.width, FlxG.height, 0xFFffffff);
         LogoBG.screenCenter(X);
-        addChild(LogoBG);
+        add(LogoBG);
         logo = new FlxSprite(-1900,0);
         logo.loadGraphic(Paths.image('Haxe Logo'));
         logo.scrollFactor.set();
-        addChild(logo);
+        add(logo);
         LogoText = new FlxSprite(1700,0);
         LogoText.loadGraphic(Paths.image('Haxe Text'));
         LogoText.scrollFactor.set();
-        addChild(LogoText);
+        add(LogoText);
         StartSong = new FlxSound().loadEmbedded(Paths.sound('start'));
 		FlxG.sound.list.add(StartSong);
         super.create();
