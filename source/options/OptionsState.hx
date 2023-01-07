@@ -143,18 +143,17 @@ class OptionsState extends MusicBeatState
 		}
 
 		if (controls.BACK) {
-			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new MainMenuState());
-        if (PlayState.instance != null && OptionsState.fromPlayState) //Check if player came from playstate.
-        {
-                    FlxG.sound.music.volume = 0.0;
-                    MusicBeatState.switchState(new PlayState());
-                    OptionsState.fromPlayState = false;
-                }
-            else // No? Then return to the main menu.
-                {
-                    MusicBeatState.switchState(new MainMenuState());
-                }
+		    FlxG.sound.play(Paths.sound('cancelMenu'));
+                    if (PlayState.instance != null && OptionsState.fromPlayState) //Check if player came from playstate.
+                    {
+                        FlxG.sound.music.volume = 0.0;
+                        MusicBeatState.switchState(new PlayState());
+                        OptionsState.fromPlayState = false;
+                    }
+                    else // No? Then return to the main menu.
+                    {
+                        MusicBeatState.switchState(new MainMenuState());
+                    }
 		}
 
 		if (controls.ACCEPT) {
