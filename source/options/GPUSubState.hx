@@ -27,7 +27,7 @@ import flixel.input.keyboard.FlxKey;
 import flixel.graphics.FlxGraphic;
 import Controls;
 import openfl.Lib;
-import FPS;
+import openfl.display.FPS;
 
 using StringTools;
 
