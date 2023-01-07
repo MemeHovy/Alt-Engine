@@ -28,6 +28,7 @@ class ClientPrefs {
 	public static var winIcon:Bool = false;
 	public static var beatMode:String = 'Both camera';
 	public static var beatType:String = '1/16';
+	public static var mouseControls:Bool = #if android true #else false;
 	public static var judgementCounter:Bool = false;
 	public static var judgementCounterType:String = 'Default';
 	public static var healthDrain:Float = 0;
@@ -129,6 +130,7 @@ class ClientPrefs {
 		FlxG.save.data.instVolume = instVolume;
 		FlxG.save.data.mainVolume = mainVolume;
 		FlxG.save.data.winIcon = winIcon;
+		FlxG.save.data.mouseControls = mouseControls;
 		FlxG.save.data.judgementCounter = judgementCounter;
 		FlxG.save.data.judgementCounterType = judgementCounterType;
 		FlxG.save.data.beatMode = beatMode;
@@ -172,6 +174,9 @@ class ClientPrefs {
                 }
 		if(FlxG.save.data.downScroll != null) {
 			downScroll = FlxG.save.data.downScroll;
+		}
+		if(FlxG.save.data.mouseControls != null) {
+			mouseControls = FlxG.save.data.mouseControls;
 		}
 		if(FlxG.save.data.middleScroll != null) {
 			middleScroll = FlxG.save.data.middleScroll;

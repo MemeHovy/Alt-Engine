@@ -79,6 +79,8 @@ class MainMenuState extends MusicBeatState
 		Paths.pushGlobalMods();
 		#end
 		WeekData.loadTheFirstEnabledMod();
+		
+		if (ClientPrefs.mouseControls) FlxG.mouse.visible = true;
 
 		#if desktop
 		// Updating Discord Rich Presence
@@ -288,12 +290,13 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 		#end
-
+    if(!ClientPrefs.mouseControls)
+    {
 		#if android
 		addVirtualPad(UP_DOWN, A_B_X_Y);
 		virtualPad.y = -44;
 		#end
-
+    }
 		super.create();
 	}
 
@@ -310,11 +313,43 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
+	   
+		if (FlxG.sound.music != null)
+			Conductor.songPosition = FlxG.sound.music.time;
+
+	var canClick:Bool = true;
+	var usingMouse:Bool = ClientPrefs.mouseControls;
 
 		var lerpVal:Float = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
 
-		if (!selectedSomethin)
+		if (usingMouse) {
+			menuItems.forEach(function(spr:FlxSprite)
+				{
+					if(!FlxG.mouse.overlaps(spr))
+						spr.animation.play('idle');
+						spr.updateHitbox();
+			
+					if (FlxG.mouse.overlaps(spr))
+					{
+						if(canClick)
+						{
+							//curSelected = spr.ID;
+							//FlxG.sound.play(Paths.sound('scrollMenu'));
+							changeItem(spr.ID, true);
+						}
+							
+						if(FlxG.mouse.pressed && canClick)
+						{
+							doTheThingHouston();
+						}
+					}
+			
+					spr.updateHitbox();
+				});
+		}
+		
+		if (!selectedSomethin && !ClientPrefs.mouseControls)
 		{
 			if (controls.UI_UP_P)
 			{
@@ -413,9 +448,13 @@ class MainMenuState extends MusicBeatState
 		});
 	}
 
-	function changeItem(huh:Int = 0)
+	function changeItem(huh:Int = 0, ?mouseInput:Bool = null)
 	{
-		curSelected += huh;
+		if (mouseInput == null) {
+			curSelected += huh;
+		} else {
+			curSelected = huh;
+		}
 
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
@@ -438,5 +477,64 @@ class MainMenuState extends MusicBeatState
 				spr.centerOffsets();
 			}
 		});
+	}
+	function doTheThingHouston() {
+		if (optionShit[curSelected] == 'donate')
+			{
+				CoolUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
+			}
+			else
+			{
+				selectedSomethin = true;
+				canClick = false;
+				FlxG.mouse.visible = false;
+				FlxG.sound.play(Paths.sound('confirmMenu'));
+
+				//if(ClientPrefs.flashing) FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+
+				menuItems.forEach(function(spr:FlxSprite)
+				{
+					if (curSelected != spr.ID)
+					{
+						FlxTween.tween(spr, {alpha: 0}, 0.4, {
+							ease: FlxEase.quadOut,
+							onComplete: function(twn:FlxTween)
+							{
+								spr.kill();
+							}
+						});
+					}
+					else
+					{
+						FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
+						{
+							var daChoice:String = optionShit[curSelected];
+
+							switch (daChoice)
+							{
+								case 'story_mode':
+									MusicBeatState.switchState(new StoryMenuState());
+								case 'freeplay':
+									MusicBeatState.switchState(new FreeplaySectionState());
+								case 'credits':
+									MusicBeatState.switchState(new CreditsState());
+								case 'options':
+									LoadingState.loadAndSwitchState(new options.OptionsState());
+								case 'patch':
+									MusicBeatState.switchState(new PatchState());
+								case 'soundtest':
+									MusicBeatState.switchState(new SoundTestState());
+							}
+						});
+					}
+				});
+			}
+	}
+		override function beatHit() {
+		super.beatHit();
+
+		bg.scale.set(1.06,1.06);
+		bg.updateHitbox();
+		//trace('beat hit' + curBeat);
 	}
 }
