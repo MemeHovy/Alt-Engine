@@ -22,12 +22,6 @@ import Achievements;
 import editors.MasterEditorMenu;
 import flixel.input.keyboard.FlxKey;
 import haxe.Json;
-#if android
-import android.flixel.FlxButton;
-#else
-import flixel.ui.FlxButton;
-#end
-
 #if MODS_ALLOWED
 import sys.FileSystem;
 import sys.io.File;
@@ -49,7 +43,8 @@ typedef MenuData =
     creditsS:Array<Float>,
     optionsS:Array<Float>,
     centerX:Bool,
-    menuBG:String
+    menuBG:String,
+    Tweens:Bool
 }
 
 class MainMenuState extends MusicBeatState
@@ -76,7 +71,7 @@ class MainMenuState extends MusicBeatState
 	var camFollow:FlxObject;
 	var camFollowPos:FlxObject;
 	var debugKeys:Array<FlxKey>;
-	
+
 	override function create()
 	{
         
@@ -84,8 +79,6 @@ class MainMenuState extends MusicBeatState
 		Paths.pushGlobalMods();
 		#end
 		WeekData.loadTheFirstEnabledMod();
-		
-		if (ClientPrefs.mouseControls) FlxG.mouse.visible = true;
 
 		#if desktop
 		// Updating Discord Rich Presence
@@ -109,7 +102,7 @@ class MainMenuState extends MusicBeatState
 		MainJSON = Json.parse(Paths.getTextFromFile('UI Jsons/MainMenuData.json'));
 
 		var yScroll:Float = Math.max(0.25 - (0.05 * (optionShit.length - 4)), 0.1);
-		public var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image(MainJSON.menuBG));
+		var bg:FlxSprite = new FlxSprite(-80).loadGraphic(Paths.image(MainJSON.menuBG));
 		bg.scrollFactor.set(0, yScroll);
 		bg.setGraphicSize(Std.int(bg.width * 1.175));
 		bg.updateHitbox();
@@ -295,25 +288,12 @@ class MainMenuState extends MusicBeatState
 			}
 		}
 		#end
-    if(!ClientPrefs.mouseControls)
-    {
+
 		#if android
 		addVirtualPad(UP_DOWN, A_B_X_Y);
 		virtualPad.y = -44;
-		
-		var editorsButton:FlxButton = new FlxButton(0, 650, "Editors", function() {
-			MusicBeatState.switchState(new editors.MasterEditorMenu());
-		});
-		editorsButton.screenCenter(X);
-		add(editorsButton);
-		var exitButton:FlxButton = new FlxButton(0, 650, "Exit Game", function() {
-			MusicBeatState.switchState(new ExitGame());
-		});
-		exitButton.screenCenter(X);
-		exitButton.x -= 120;
-		add(exitButton);
 		#end
-    }
+
 		super.create();
 	}
 
@@ -330,43 +310,11 @@ class MainMenuState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-	   
-		if (FlxG.sound.music != null)
-			Conductor.songPosition = FlxG.sound.music.time;
-
-	public var canClick:Bool = true;
-	public var usingMouse:Bool = ClientPrefs.mouseControls;
 
 		var lerpVal:Float = CoolUtil.boundTo(elapsed * 7.5, 0, 1);
 		camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
 
-		if (usingMouse) {
-			menuItems.forEach(function(spr:FlxSprite)
-				{
-					if(!FlxG.mouse.overlaps(spr))
-						spr.animation.play('idle');
-						spr.updateHitbox();
-			
-					if (FlxG.mouse.overlaps(spr))
-					{
-						if(canClick)
-						{
-							//curSelected = spr.ID;
-							//FlxG.sound.play(Paths.sound('scrollMenu'));
-							changeItem(spr.ID, true);
-						}
-							
-						if(FlxG.mouse.pressed && canClick)
-						{
-							doTheThingHouston();
-						}
-					}
-			
-					spr.updateHitbox();
-				});
-		}
-		
-		if (!selectedSomethin && !ClientPrefs.mouseControls)
+		if (!selectedSomethin)
 		{
 			if (controls.UI_UP_P)
 			{
@@ -465,13 +413,9 @@ class MainMenuState extends MusicBeatState
 		});
 	}
 
-	function changeItem(huh:Int = 0, ?mouseInput:Bool = null)
+	function changeItem(huh:Int = 0)
 	{
-		if (mouseInput == null) {
-			curSelected += huh;
-		} else {
-			curSelected = huh;
-		}
+		curSelected += huh;
 
 		if (curSelected >= menuItems.length)
 			curSelected = 0;
@@ -494,66 +438,5 @@ class MainMenuState extends MusicBeatState
 				spr.centerOffsets();
 			}
 		});
-	}
-	function doTheThingHouston() {
-		if (optionShit[curSelected] == 'donate')
-			{
-				CoolUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
-			}
-			else
-			{
-				selectedSomethin = true;
-				canClick = false;
-				FlxG.mouse.visible = false;
-				FlxG.sound.play(Paths.sound('confirmMenu'));
-
-				//if(ClientPrefs.flashing) FlxFlicker.flicker(magenta, 1.1, 0.15, false);
-
-				menuItems.forEach(function(spr:FlxSprite)
-				{
-					if (curSelected != spr.ID)
-					{
-						FlxTween.tween(spr, {alpha: 0}, 0.4, {
-							ease: FlxEase.quadOut,
-							onComplete: function(twn:FlxTween)
-							{
-								spr.kill();
-							}
-						});
-					}
-					else
-					{
-						FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
-						{
-							var daChoice:String = optionShit[curSelected];
-
-							switch (daChoice)
-								{
-									case 'story_mode':
-										MusicBeatState.switchState(new StoryMenuState());
-									case 'freeplay':
-										MusicBeatState.switchState(new FreeplayState());
-									#if MODS_ALLOWED
-									case 'mods':
-										MusicBeatState.switchState(new ModsMenuState());
-									#end
-									case 'awards':
-										MusicBeatState.switchState(new AchievementsMenuState());
-									case 'credits':
-										MusicBeatState.switchState(new CreditsState());
-									case 'options':
-										LoadingState.loadAndSwitchState(new options.OptionsState());
-								}
-						});
-					}
-				});
-			}
-	}
-		override function beatHit() {
-		super.beatHit();
-
-		bg.scale.set(1.06,1.06);
-		bg.updateHitbox();
-		//trace('beat hit' + curBeat);
 	}
 }
