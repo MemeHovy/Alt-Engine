@@ -127,7 +127,7 @@ class SUtil
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
-	public static function getPath(type:StorageType = SUtilFile.StorageType):String
+	static public function getPath(type:StorageType = SUtilFile.StorageType):String
 	{
 		#if android
 		var daPath:String = '';
