@@ -45,10 +45,12 @@ class SUtil
 	 */
 	var SUtilFile:SUtilData;
 	
-	override public function create():Void
+	public function create():Void
 	{
-	    FileSystem.createDirectory(SUtil.getPath() + 'system');
+	FileSystem.createDirectory(SUtil.getPath() + 'system');
     	SUtilFile = Json.parse(Paths.getTextFromFile(SUtil.getPath() + 'system/SUtil.json'));
+
+        super.create();
 	}
 	public static function check():Void
 	{
