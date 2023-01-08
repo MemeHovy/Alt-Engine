@@ -29,6 +29,11 @@ enum StorageType
 	APP_DATA;
 }
 
+typedef SUtilData =
+{
+	StorageType:String
+}
+
 /**
  * ...
  * @author Mihai Alexandru (M.A. Jigsaw)
@@ -38,6 +43,13 @@ class SUtil
 	/**
 	 * A simple function that checks for storage permissions and game files/folders.
 	 */
+	var SUtilFile:SUtilData;
+	
+	override public function create():Void
+	{
+	    FileSystem.createDirectory(SUtil.getPath() + 'system');
+    	SUtilFile = Json.parse(Paths.getTextFromFile(SUtil.getPath() + 'system/SUtil.json'));
+	}
 	public static function check():Void
 	{
 		#if android
@@ -113,7 +125,7 @@ class SUtil
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
-	public static function getPath(type:StorageType = APP_DATA):String
+	public static function getPath(type:StorageType = SUtilFile.StorageType):String
 	{
 		#if android
 		var daPath:String = '';
@@ -125,7 +137,7 @@ class SUtil
 			case ROOT:
 				daPath = Context.getFilesDir() + '/';
 			case APP_DATA:
-			daPath = Environment.getExternalStorageDirectory() + '/' + '.' + Lib.application.meta.get('file') + MainMenuState.altEngineVersion + '/';
+			daPath = Environment.getExternalStorageDirectory() + '/' + '.' + Lib.application.meta.get('file') + ' ' + '[' + MainMenuState.altEngineVersion + ']' + '/';
 		}
 		//if (!FileSystem.exists(SUtil.getPath() + Path.directory(daPath)))
 			//SUtill.copyContent(Path.directory(daPath), Path.directory(daPath)); //this shit was made by an undertale fan and its prob not gonna work
