@@ -19,6 +19,7 @@ import sys.io.File;
 #else
 import haxe.Log;
 #end
+import haxe.Json;
 
 using StringTools;
 
@@ -132,28 +133,25 @@ class SUtil
 	 */
 	public static function getPath(?type:StorageType):String
 	{
-		if(type = null) type = instance.SUtilFile.StorageType;
+		var daType:StorageType = (type == null ? instance.SUtilFile.StorageType : type);
 
-		#if android
 		var daPath:String = '';
-
-		switch (type)
+		#if android
+		switch (daType)
 		{
 			case ANDROID_DATA:
 				daPath = Context.getExternalFilesDir(null) + '/';
 			case ROOT:
 				daPath = Context.getFilesDir() + '/';
 			case APP_DATA:
-			daPath = Environment.getExternalStorageDirectory() + '/' + '.' + Lib.application.meta.get('file') + ' ' + '[' + MainMenuState.altEngineVersion + ']' + '/';
+				daPath = Environment.getExternalStorageDirectory() + '/' + '.' + Lib.application.meta.get('file') + ' ' + '[' + MainMenuState.altEngineVersion + ']' + '/';
 		}
 		//if (!FileSystem.exists(SUtil.getPath() + Path.directory(daPath)))
 			//SUtill.copyContent(Path.directory(daPath), Path.directory(daPath)); //this shit was made by an undertale fan and its prob not gonna work
 		SUtil.mkDirs(Path.directory(daPath));
 
-		return daPath;
-		#else
-		return '';
 		#end
+		return daPath;
 	}
 
 	/**
