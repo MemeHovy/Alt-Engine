@@ -51,8 +51,8 @@ class SUtil
 	public function create():Void
 	{
 		FileSystem.createDirectory(SUtil.getPath() + 'system');
-		var otherSUtilFile = Json.parse(Paths.getTextFromFile(SUtil.getPath() + 'system/SUtil.json'));
-		if(otherSUtilFile.StorageFile == null) otherSUtilFile.StorageFile = StorageFile.ROOT;
+		var otherSUtilFile:Dynamic = Json.parse(Paths.getTextFromFile(SUtil.getPath() + 'system/SUtil.json'));
+		if(otherSUtilFile.StorageType == null) otherSUtilFile.StorageType = StorageType.ROOT;
 		SUtilFile = cast(otherSUtilFile); // i dont really know how it works...
 
 		instance = this;
