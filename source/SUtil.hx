@@ -43,14 +43,17 @@ class SUtil
 	/**
 	 * A simple function that checks for storage permissions and game files/folders.
 	 */
-	static var SUtilFile:SUtilData;
+	public var SUtilFile:SUtilData;
+
+	public static var instance:SUtil;
 	
 	public function create():Void
 	{
-	FileSystem.createDirectory(SUtil.getPath() + 'system');
-    	SUtilFile = Json.parse(Paths.getTextFromFile(SUtil.getPath() + 'system/SUtil.json'));
+		FileSystem.createDirectory(SUtil.getPath() + 'system');
+		SUtilFile = Json.parse(Paths.getTextFromFile(SUtil.getPath() + 'system/SUtil.json'));
 
-        super.create();
+		instance = this;
+		super.create();
 	}
 	public static function check():Void
 	{
@@ -127,8 +130,10 @@ class SUtil
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
-	public function getPath(type:StorageType = SUtilFile.StorageType):String
+	public static function getPath(?type:StorageType):String
 	{
+		if(type = null) type = instance.SUtilFile.StorageType;
+
 		#if android
 		var daPath:String = '';
 
