@@ -43,7 +43,7 @@ class SUtil
 	/**
 	 * A simple function that checks for storage permissions and game files/folders.
 	 */
-	var SUtilFile:SUtilData;
+	static var SUtilFile:SUtilData;
 	
 	public function create():Void
 	{
