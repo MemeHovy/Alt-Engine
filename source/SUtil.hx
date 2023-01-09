@@ -32,7 +32,7 @@ enum StorageType
 
 typedef SUtilData =
 {
-	StorageType:String // wait... shouldt it be "StorageType:StorageType"????
+	StorageType:StorageType
 }
 
 /**
@@ -51,10 +51,11 @@ class SUtil
 	public function create():Void
 	{
 		FileSystem.createDirectory(SUtil.getPath() + 'system');
-		SUtilFile = Json.parse(Paths.getTextFromFile(SUtil.getPath() + 'system/SUtil.json'));
+		var otherSUtilFile = Json.parse(Paths.getTextFromFile(SUtil.getPath() + 'system/SUtil.json'));
+		if(otherSUtilFile.StorageFile == null) otherSUtilFile.StorageFile = StorageFile.ROOT;
+		SUtilFile = cast(otherSUtilFile); // i dont really know how it works...
 
 		instance = this;
-		//super.create(); // what the hell???
 	}
 	public static function check():Void
 	{
@@ -131,9 +132,9 @@ class SUtil
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
-	public static function getPath(?type:String /*StorageType*/):String
+	public static function getPath(?type:StorageType):String
 	{
-		var daType:String /*StorageType*/ = (type == null ? instance.SUtilFile.StorageType : type);
+		var daType:StorageType = (type == null ? instance.SUtilFile.StorageType : type);
 
 		var daPath:String = '';
 		#if android
