@@ -54,7 +54,7 @@ class SUtil
 		SUtilFile = Json.parse(Paths.getTextFromFile(SUtil.getPath() + 'system/SUtil.json'));
 
 		instance = this;
-		super.create();
+		//super.create(); // what the hell???
 	}
 	public static function check():Void
 	{
