@@ -32,7 +32,7 @@ enum StorageType
 
 typedef SUtilData =
 {
-	StorageType:String
+	StorageType:String // wait... shouldt it be "StorageType:StorageType"????
 }
 
 /**
@@ -131,9 +131,9 @@ class SUtil
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
-	public static function getPath(?type:StorageType):String
+	public static function getPath(?type:String /*StorageType*/):String
 	{
-		var daType:StorageType = (type == null ? instance.SUtilFile.StorageType : type);
+		var daType:String /*StorageType*/ = (type == null ? instance.SUtilFile.StorageType : type);
 
 		var daPath:String = '';
 		#if android
