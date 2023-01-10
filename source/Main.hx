@@ -112,9 +112,9 @@ class Main extends Sprite
 			FlxG.bitmap.dumpCache();
 
 			var cache = cast(Assets.cache, AssetCache);
-			for (key=>font in cache.font)
+			for (key in cache.font.keys())
 				cache.removeFont(key);
-			for (key=>sound in cache.sound)
+			for (key in cache.sound.keys())
 				cache.removeSound(key);
 
 			gc();
@@ -157,8 +157,8 @@ class Main extends Sprite
 		}
 		#end
 			
-		Application.current.window.onFocusOut.add(onWindowFocusOut);
-		Application.current.window.onFocusIn.add(onWindowFocusIn);
+		/*Application.current.window.onFocusOut.add(onWindowFocusOut);
+		Application.current.window.onFocusIn.add(onWindowFocusIn);*/
 	}
 	
 	function onResizeGame(w:Int, h:Int) {
@@ -167,7 +167,7 @@ class Main extends Sprite
 
 		for (cam in FlxG.cameras.list) {
 			@:privateAccess
-			if (cam != null && (cam._filters != null || cam._filters != []))
+			if (cam != null && (cam._filters != null || cam._filters/*.length > 0*/ != []))
 				fixShaderSize(cam);
 		}	
 	}
