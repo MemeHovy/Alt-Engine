@@ -38,32 +38,26 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
-          haxelib install lime 7.9.0 --quiet
           haxelib install hxcpp > /dev/null
-          haxelib install lime-samples --quiet
+          haxelib install lime 7.9.0 --quiet
           haxelib install openfl 9.1.0 --quiet
-          haxelib install openfl-samples --quiet
-          haxelib install actuate --quiet
-          haxelib install box2d --quiet
-          haxelib install layout --quiet
-          haxelib install systools --quiet
+          haxelib install flixel 4.11.0 --quiet
           haxelib run lime setup flixel
           haxelib install flixel-tools --quiet
           haxelib install flixel-ui 2.4.0 --quiet
           haxelib install flixel-addons 2.11.0 --quiet
           haxelib install polymod --quiet
           haxelib install spinehaxe --quiet
-          haxelib git polymod-mastereric https://github.com/MasterEric/polymod
+          haxelib git polymod-mastereric https://github.com/MasterEric/polymod --quiet
           haxelib install hscript --quiet
-          haxelib git hscript-yoshiengine https://github.com/YoshiCrafter29/hscript-improved
-          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
-          haxelib git hxCodec https://github.com/polybiusproxy/hxcodec
-          haxelib git linc_luajit https://github.com/Sirox228/linc_luajit
-          haxelib git SScript https://github.com/TheWorldMachinima/SScript
-          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+          haxelib git hscript-yoshiengine https://github.com/YoshiCrafter29/hscript-improved --quiet
+          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex --quiet
+          haxelib git hxCodec https://github.com/polybiusproxy/hxcodec --quiet
+          haxelib git linc_luajit https://github.com/Sirox228/linc_luajit --quiet
+          haxelib git SScript https://github.com/TheWorldMachinima/SScript --quiet
+          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools --quiet
+          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc --quiet
           haxelib list
-          
       - name: Setup Lime
         run: |
           echo "${{github.run_id}}" > VERSION
@@ -79,7 +73,7 @@ jobs:
         run: |
          haxelib run lime build android -D no-compilation -D luajit_static -D macro-times -D analyzer-optimize -armv7 --app-version="4.0.0-${{ github.run_id}}"
          cd export/release/android/bin/app/build/outputs/apk/debug
-         mv AltEngine-debugging.apk AltEngine-debug.apk
+         mv AltEngine-debug.apk AltEngine-debug.apk
 
       - name: Publish Artifact
         uses: actions/upload-artifact@main
@@ -116,32 +110,26 @@ jobs:
       - name: Install Haxelib...
         run: |
           haxelib setup ~/haxelib
-          haxelib install lime 7.9.0 --quiet
           haxelib install hxcpp > /dev/null
-          haxelib install lime-samples --quiet
+          haxelib install lime 7.9.0 --quiet
           haxelib install openfl 9.1.0 --quiet
-          haxelib install openfl-samples --quiet
-          haxelib install actuate --quiet
-          haxelib install box2d --quiet
-          haxelib install layout --quiet
-          haxelib install systools --quiet
+          haxelib install flixel 4.11.0 --quiet
           haxelib run lime setup flixel
           haxelib install flixel-tools --quiet
           haxelib install flixel-ui 2.4.0 --quiet
           haxelib install flixel-addons 2.11.0 --quiet
           haxelib install polymod --quiet
           haxelib install spinehaxe --quiet
-          haxelib git polymod-mastereric https://github.com/MasterEric/polymod
+          haxelib git polymod-mastereric https://github.com/MasterEric/polymod --quiet
           haxelib install hscript --quiet
-          haxelib git hscript-yoshiengine https://github.com/YoshiCrafter29/hscript-improved
-          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
-          haxelib git hxCodec https://github.com/polybiusproxy/hxcodec
-          haxelib git linc_luajit https://github.com/Sirox228/linc_luajit
-          haxelib git SScript https://github.com/TheWorldMachinima/SScript
-          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
+          haxelib git hscript-yoshiengine https://github.com/YoshiCrafter29/hscript-improved --quiet
+          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex --quiet
+          haxelib git hxCodec https://github.com/polybiusproxy/hxcodec --quiet
+          haxelib git linc_luajit https://github.com/Sirox228/linc_luajit --quiet
+          haxelib git SScript https://github.com/TheWorldMachinima/SScript --quiet
+          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools --quiet
+          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc --quiet
           haxelib list
-          
       - name: Setup Lime...
         run: |
           echo "${{github.run_id}}" > VERSION
