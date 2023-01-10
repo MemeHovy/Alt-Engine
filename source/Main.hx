@@ -1,6 +1,10 @@
 package;
 
 import flixel.graphics.FlxGraphic;
+import flixel.FlxCamera;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -10,6 +14,9 @@ import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
+import openfl.system.System;
+import cpp.vm.Gc;
+import openfl.utils.AssetCache;
 
 //crash handler stuff
 #if CRASH_HANDLER
@@ -37,6 +44,7 @@ class Main extends Sprite
 	var skipSplash:Bool = false; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
 	public static var fpsVar:FPS;
+	public static var focusMusicTween:FlxTween;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -90,7 +98,33 @@ class Main extends Sprite
 		SUtil.check();
 	
 		ClientPrefs.loadDefaultKeys();
+
+		#if cpp 
+		Gc.enable(true);
+		#end
+
 		addChild(new FlxGame(gameWidth, gameHeight, initialState, #if (flixel < "5.0.0") zoom, #end framerate, framerate, skipSplash, startFullscreen));
+		FlxGraphic.defaultPersist = false;
+				     
+		FlxG.signals.gameResized.add(onResizeGame);
+		FlxG.signals.preStateSwitch.add(function () {
+			Paths.clearStoredMemory(true);
+			FlxG.bitmap.dumpCache();
+
+			var cache = cast(Assets.cache, AssetCache);
+			for (key=>font in cache.font)
+				cache.removeFont(key);
+			for (key=>sound in cache.sound)
+				cache.removeSound(key);
+
+			gc();
+		});
+		FlxG.signals.postStateSwitch.add(function () {
+			Paths.clearUnusedMemory();
+			gc();
+
+			trace(System.totalMemory);
+		});
 
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
@@ -101,14 +135,132 @@ class Main extends Sprite
 		}
 
 		#if html5
-		FlxG.autoPause = false;
 		FlxG.mouse.visible = false;
+		#end
+			
+		FlxG.autoPause = false;
+			
+		#if cpp
+		cpp.NativeGc.enable(true);
+		cpp.NativeGc.run(true);
 		#end
 
 		#if CRASH_HANDLER
 		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
 		#end
+			
+		#if desktop
+		if (!DiscordClient.isInitialized) {
+			DiscordClient.initialize();
+			Application.current.window.onClose.add(function() {
+				DiscordClient.shutdown();
+			});
+		}
+		#end
+			
+		Application.current.window.onFocusOut.add(onWindowFocusOut);
+		Application.current.window.onFocusIn.add(onWindowFocusIn);
 	}
+	
+	function onResizeGame(w:Int, h:Int) {
+		if (FlxG.cameras == null)
+			return;
+
+		for (cam in FlxG.cameras.list) {
+			@:privateAccess
+			if (cam != null && (cam._filters != null || cam._filters != []))
+				fixShaderSize(cam);
+		}	
+	}
+
+	function fixShaderSize(camera:FlxCamera) // Shout out to Ne_Eo for bringing this to my attention
+		{
+			@:privateAccess {
+				var sprite:Sprite = camera.flashSprite;
+	
+				if (sprite != null)
+				{
+					sprite.__cacheBitmap = null;
+					sprite.__cacheBitmapData = null;
+					sprite.__cacheBitmapData2 = null;
+					sprite.__cacheBitmapData3 = null;
+					sprite.__cacheBitmapColorTransform = null;
+				}
+			}
+		}
+	
+	var newgame:FlxGame;
+	var oldVol:Float = 1.0;
+	var newVol:Float = 0.3;
+
+	public static var focused:Bool = true;
+
+	// thx for ur code ari
+	function onWindowFocusOut()
+		{
+			focused = false;
+	
+			// Lower global volume when unfocused
+			if (Type.getClass(FlxG.state) != PlayState) // imagine stealing my code smh
+			{
+				oldVol = FlxG.sound.volume;
+				if (oldVol > 0.3)
+				{
+					newVol = 0.3;
+				}
+				else
+				{
+					if (oldVol > 0.1)
+					{
+						newVol = 0.1;
+					}
+					else
+					{
+						newVol = 0;
+					}
+				}
+	
+				//trace("Game unfocused");
+	
+				if (focusMusicTween != null)
+					focusMusicTween.cancel();
+				focusMusicTween = FlxTween.tween(FlxG.sound, {volume: newVol}, 0.5);
+	
+				// Conserve power by lowering draw framerate when unfocuced
+				FlxG.drawFramerate = 60;
+			}
+		}
+	
+		function onWindowFocusIn()
+		{
+			new FlxTimer().start(0.2, function(tmr:FlxTimer)
+			{
+				focused = true;
+			});
+	
+			// Lower global volume when unfocused
+			if (Type.getClass(FlxG.state) != PlayState)
+			{
+				//trace("Game focused");
+	
+				// Normal global volume when focused
+				if (focusMusicTween != null)
+					focusMusicTween.cancel();
+	
+				focusMusicTween = FlxTween.tween(FlxG.sound, {volume: oldVol}, 0.5);
+	
+				// Bring framerate back when focused
+				FlxG.drawFramerate = 60;
+			}
+		}
+
+		public static function gc() {
+			#if cpp
+			Gc.run(true);
+			#else
+			openfl.system.System.gc();
+			#end
+		}
 
 	// Code was entirely made by sqirra-rng for their fnf engine named "Izzy Engine", big props to them!!!
 	// very cool person for real they don't get enough credit for their work
