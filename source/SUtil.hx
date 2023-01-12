@@ -118,7 +118,7 @@ class SUtil
 	{
 		var daPath:String = '';
 		#if android
-		switch (daType)
+		switch (type)
 		{
 			case ANDROID_DATA:
 				daPath = Context.getExternalFilesDir(null) + '/';
