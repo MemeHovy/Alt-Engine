@@ -30,11 +30,6 @@ enum StorageType
 	APP_DATA;
 }
 
-typedef SUtilData =
-{
-	StorageType:StorageType
-}
-
 /**
  * ...
  * @author Mihai Alexandru (M.A. Jigsaw)
@@ -44,19 +39,6 @@ class SUtil
 	/**
 	 * A simple function that checks for storage permissions and game files/folders.
 	 */
-	public var SUtilFile:SUtilData;
-
-	public static var instance:SUtil;
-	
-	public function create():Void
-	{
-		FileSystem.createDirectory(SUtil.getPath() + 'system');
-		var otherSUtilFile:Dynamic = Json.parse(Paths.getTextFromFile(SUtil.getPath() + 'system/SUtil.json'));
-		if(otherSUtilFile.StorageType == null) otherSUtilFile.StorageType = StorageType.ROOT;
-		SUtilFile = cast(otherSUtilFile); // i dont really know how it works...
-
-		instance = this;
-	}
 	public static function check():Void
 	{
 		#if android
@@ -132,10 +114,8 @@ class SUtil
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
-	public static function getPath(?type:StorageType):String
+	public static function getPath(type:StorageType = APP_DATA):String
 	{
-		var daType:StorageType = (type == null ? instance.SUtilFile.StorageType : type);
-
 		var daPath:String = '';
 		#if android
 		switch (daType)
