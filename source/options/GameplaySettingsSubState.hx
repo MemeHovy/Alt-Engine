@@ -72,14 +72,14 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			'bool',
 			true);
 		addOption(option);
-
+                #if !android
 		var option:Option = new Option('Disable Reset Button',
 			"If checked, pressing Reset won't do anything.",
 			'noReset',
 			'bool',
 			false);
 		addOption(option);
-
+                #end
 		var option:Option = new Option('Hitsound Volume',
 			'Funny notes does \"Tick!\" when you hit them."',
 			'hitsoundVolume',
@@ -137,14 +137,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 135;
 		addOption(option);
 
-		var option:Option = new Option('Save replay',
-			'If checked, the game will save a recording of your game\nfor every song you beat in story mode.
-			Note that replays are not a video so\nreplay\'s size will be pretty small.',
-			'saveReplay',
-			'bool',
-			true);
-		addOption(option);
-
 		var option:Option = new Option('Safe Frames',
 			'Changes how many frames you have for\nhitting a note earlier or late.',
 			'safeFrames',
@@ -156,6 +148,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		addOption(option);
 
+                if(ClientPrefs.drainType != 'None')
                 var option:Option = new Option('Health Drain',
 			'Add Draining health when opponent hit in note.',
 			'healthDrain',
@@ -167,16 +160,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		addOption(option);
 
-		#if android
-		var option:Option = new Option('GameOver Vibration',
-			'If unchecked, will make the game to vibrate when you die.',
-			'vibration',
-			'bool',
-			false);
-		addOption(option);
-		option.onChange = onChangeGameOverVibration;
-		#end
-
 		super();
 	}
 
@@ -184,14 +167,4 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 	{
 		FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.hitsoundVolume);
 	}
-
-	#if android
-	function onChangeGameOverVibration()
-	{
-		if(ClientPrefs.vibration)
-		{
-			Tools.vibrate(500);
-		}
-	}
-	#end
 }
