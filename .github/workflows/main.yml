@@ -45,7 +45,7 @@ jobs:
           haxelib install flixel-addons 2.11.0
           haxelib install tjson
           haxelib install hxjsonast
-          haxelib install hxCodec
+          haxelib install hxCodec 2.5.1
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
           haxelib install hscript
           haxelib install spinehaxe --quiet
@@ -91,7 +91,7 @@ jobs:
           haxelib install flixel-addons 2.11.0
           haxelib install tjson
           haxelib install hxjsonast
-          haxelib git hxCodec https://github.com/polybiusproxy/hxcodec
+          haxelib install hxCodec 2.5.1
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
           haxelib install hscript
           haxelib git polymod-mastereric https://github.com/MasterEric/polymod
@@ -138,7 +138,7 @@ jobs:
           haxelib install flixel-addons 2.11.0
           haxelib install tjson
           haxelib install hxjsonast
-          haxelib install hxCodec
+          haxelib install hxCodec 2.5.1
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
           haxelib install hscript
           haxelib git polymod-mastereric https://github.com/MasterEric/polymod
@@ -200,7 +200,7 @@ jobs:
           haxelib git hscript-yoshiengine https://github.com/YoshiCrafter29/hscript-improved
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib install flixel-addons --quiet
-          haxelib git hxCodec https://github.com/polybiusproxy/hxcodec
+          haxelib install hxCodec 2.5.1
           haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit
           haxelib git SScript https://github.com/TheWorldMachinima/SScript
           haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools
