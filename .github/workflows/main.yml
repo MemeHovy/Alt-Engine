@@ -1,7 +1,9 @@
 # This is a basic workflow to help you get started with Actions
+
 name: Alt engine
-# Controls when the action will run
-on: 
+
+# Controls when the action will run. 
+on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ main ]
@@ -13,35 +15,34 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-# This workflow contains a single job called "build"
-  buildarmv7:
-    name: Armv7
-    runs-on: ubuntu-22.04
+  # This workflow contains a single job called "build"
+  buildAndroid:
+    name: buildAndroid
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@main
+        uses: actions/checkout@v2.3.1
 
       - name: Setup Android NDK
-        uses: nttld/setup-ndk@main
+        uses: nttld/setup-ndk@v1
         id: setup-ndk
         with:
           ndk-version: r21e
 
       - name: Setup Java JDK
-        uses: actions/setup-java@main
+        uses: actions/setup-java@v1
         with:
-          distribution: zulu
-          java-version: 12
+          java-version: 11
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@main
+        uses: android-actions/setup-android@v2
 
       - name: Setup Haxe
-        uses: krdlab/setup-haxe@master
+        uses: krdlab/setup-haxe@v1.1.5
         with:
           haxe-version: 4.2.5
 
-      - name: Install haxelib
+      - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
           haxelib install hxcpp > /dev/null
@@ -50,87 +51,7 @@ jobs:
           haxelib install flixel 4.11.0 --quiet
           haxelib run lime setup flixel
           haxelib install flixel-tools --quiet
-          haxelib install flixel-ui 2.4.0
-          haxelib install flixel-addons 2.11.0
-          haxelib install polymod --quiet
-          haxelib install spinehaxe --quiet
-          haxelib git polymod-mastereric https://github.com/MasterEric/polymod
-          haxelib install hscript 
-          haxelib git hscript-yoshiengine https://github.com/YoshiCrafter29/hscript-improved
-          haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
-          haxelib install flixel-addons --quiet
-          haxelib git hxCodec https://github.com/polybiusproxy/hxcodec
-          haxelib git linc_luajit https://github.com/MAJigsaw77/linc_luajit.git
-          haxelib git SScript https://github.com/TheWorldMachinima/SScript
-          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools
-          haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib git faxe https://github.com/uhrobots/faxe.git
-          haxelib git extension-videoview https://github.com/MAJigsaw77/extension-videoview.git
-          haxelib list
-      - name: Setup Lime
-        run: |
-          echo "${{github.run_id}}" > VERSION
-          haxelib run lime setup -alias -y
-          haxelib run lime config ANDROID_SDK $ANDROID_HOME
-          haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
-          haxelib run lime config JAVA_HOME $JAVA_HOME
-          haxelib run lime config ANDROID_SETUP true
-          haxelib set lime 7.9.0
-          haxelib set openfl 9.1.0
-          haxelib set flixel-addons 2.11.0
-          haxelib set flixel-ui 2.4.0
-        env:
-          ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
-
-      - name: Compile
-        run: |
-         haxelib run lime build android -D no-compilation -D luajit_static -D macro-times -D analyzer-optimize -armv7 --app-version="4.0.0-${{ github.run_id}}"
-         cd export/release/android/bin/app/build/outputs/apk/debug
-         mv AltEngine-debug.apk AltEngine-armv7.apk
-
-      - name: Publish Artifact
-        uses: actions/upload-artifact@main
-        with:
-          name: buildarmv7
-          path: export/release/android/bin/app/build/outputs/apk/debug
-  buildarm64:
-    name: Arm64
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Checkout
-        uses: actions/checkout@main
-
-      - name: Setup Android NDK
-        uses: nttld/setup-ndk@main
-        id: setup-ndk
-        with:
-          ndk-version: r21e
-
-      - name: Setup Java JDK
-        uses: actions/setup-java@main
-        with:
-          distribution: zulu
-          java-version: 12
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@main
-
-      - name: Setup Haxe
-        uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.2.5
-
-      - name: Install haxelib
-        run: |
-          haxelib setup ~/haxelib
-          haxelib install hxcpp > /dev/null
-          haxelib install lime 7.9.0 --quiet
-          haxelib install openfl 9.1.0 --quiet
-          haxelib install flixel 4.11.0 --quiet
-          haxelib run lime setup flixel
-          haxelib install flixel-tools --quiet
-          haxelib install flixel-ui 2.4.0
-          haxelib install flixel-addons 2.11.0
+          haxelib install flixel-ui --quiet
           haxelib install polymod --quiet
           haxelib install spinehaxe --quiet
           haxelib git polymod-mastereric https://github.com/MasterEric/polymod
@@ -140,15 +61,14 @@ jobs:
           haxelib install flixel-addons --quiet
           haxelib git hxCodec https://github.com/polybiusproxy/hxcodec
           haxelib git linc_luajit https://github.com/Sirox228/linc_luajit
-          haxelib git SScript https://github.com/TheWorldMachinima/SScript
-          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools
+          haxelib git extension-androidtools https://github.com/Fearester/extension-androidtools
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
-          haxelib git faxe https://github.com/uhrobots/faxe.git
-          haxelib git extension-videoview https://github.com/MAJigsaw77/extension-videoview.git
           haxelib list
+      - name: Create Version Tag
+        run: echo "${{github.run_id}}" > VERSION
+
       - name: Setup Lime
         run: |
-          echo "${{github.run_id}}" > VERSION
           haxelib run lime setup -alias -y
           haxelib run lime config ANDROID_SDK $ANDROID_HOME
           haxelib run lime config ANDROID_NDK_ROOT $ANDROID_NDK_HOME
@@ -156,19 +76,15 @@ jobs:
           haxelib run lime config ANDROID_SETUP true
           haxelib set lime 7.9.0
           haxelib set openfl 9.1.0
-          haxelib set flixel-addons 2.11.0
-          haxelib set flixel-ui 2.4.0
+          haxelib list
         env:
           ANDROID_NDK_HOME: ${{ steps.setup-ndk.outputs.ndk-path }}
 
       - name: Compile
-        run: |
-         haxelib run lime build android -D no-compilation -D luajit_static -D macro-times -D analyzer-optimize -arm64 --app-version="4.0.0-${{ github.run_id}}"
-         cd export/release/android/bin/app/build/outputs/apk/debug
-         mv AltEngine-debug.apk AltEngine-arm64.apk
+        run: haxelib run lime build android --app-version="4.0.0-${{ github.run_id}}"
 
       - name: Publish Artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v2.2.4
         with:
-          name: buildarm64
-          path: export/release/android/bin/app/build/outputs/apk/debug 
+          name: Android
+          path: export/release/android/bin/app/build/outputs/apk/debug
