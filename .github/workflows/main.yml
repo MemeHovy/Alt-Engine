@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: buildAndroid
+name: Alt engine
 
 # Controls when the action will run. 
 on:
@@ -51,8 +51,7 @@ jobs:
           haxelib install flixel 4.11.0 --quiet
           haxelib run lime setup flixel
           haxelib install flixel-tools --quiet
-          haxelib install flixel-ui 2.4.0
-          haxelib install flixel-addons 2.11.0
+          haxelib install flixel-ui --quiet
           haxelib install polymod --quiet
           haxelib install spinehaxe --quiet
           haxelib git polymod-mastereric https://github.com/MasterEric/polymod
@@ -62,8 +61,7 @@ jobs:
           haxelib install flixel-addons --quiet
           haxelib git hxCodec https://github.com/SPLCoding/hxCodec-but-it-works-xd.git
           haxelib git linc_luajit https://github.com/Sirox228/linc_luajit
-          haxelib git SScript https://github.com/TheWorldMachinima/SScript
-          haxelib git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools
+          haxelib git extension-androidtools https://github.com/Fearester/extension-androidtools
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib list
       - name: Create Version Tag
@@ -88,5 +86,5 @@ jobs:
       - name: Publish Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
-          name: AE Android Build
+          name: Android
           path: export/release/android/bin/app/build/outputs/apk/debug
