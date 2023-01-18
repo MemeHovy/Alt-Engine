@@ -5355,11 +5355,11 @@ class PlayState extends MusicBeatState
 			// Rating FC
 			ratingFC = "";
 			if (greats > 0) ratingFC = "Crazy Master!!";
-			if (sicks > 0) ratingFC = "Sick Master";
+			if (sicks > 0) ratingFC = "Sick Master!";
 			if (goods > 0) ratingFC = "Good Master";
 			if (bads > 0 || shits > 0) ratingFC = "Master";
-			if (songMisses > 0 && songMisses < 10) ratingFC = 'Dont Master...';
-			else if (songMisses >= 10) ratingFC = "You Player??";
+			if (songMisses > 0 && songMisses < 10) ratingFC = 'Not even Master...';
+			else if (songMisses >= 10) ratingFC = "Are you Player??";
 		}
 		updateScore(badHit); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce -Ghost
 		setOnLuas('rating', ratingPercent);
