@@ -148,7 +148,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		addOption(option);
 
-                if(ClientPrefs.drainType != 'None')
                 var option:Option = new Option('Health Drain',
 			'Add Draining health when opponent hit in note.',
 			'healthDrain',
