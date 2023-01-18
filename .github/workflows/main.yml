@@ -87,4 +87,3 @@ jobs:
         with:
           name: androidBuild-${{ matrix.arch }}
           path: export/${{ matrix.arch }}/android/bin/app/build/outputs/apk/debug
-          if-no-files-found: error
