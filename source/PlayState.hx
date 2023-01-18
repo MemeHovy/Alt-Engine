@@ -5341,13 +5341,6 @@ class PlayState extends MusicBeatState
 				// Rating Name
 				if(ratingPercent >= 1)
 				{
-					ratingName = ratingStuff[ratingStuff.length-1][0]; //Uses last string
-					if(greats <= 20)
-						ratingName =  'Perfect!'; // yeah...
-						
-				}
-				else
-				{
 					for (i in 0...ratingStuff.length-1)
 					{
 						if(ratingPercent < ratingStuff[i][1])
@@ -5361,11 +5354,12 @@ class PlayState extends MusicBeatState
 
 			// Rating FC
 			ratingFC = "";
-			if (sicks > 0) ratingFC = "Sick Full Combo";
-			if (goods > 0) ratingFC = "Good Full Combo";
-			if (bads > 0 || shits > 0) ratingFC = "Full Combo";
-			if (songMisses > 0 && songMisses < 10) ratingFC = "Single Digital Combo Break";
-			else if (songMisses >= 10) ratingFC = "[]";
+			if (greats > 0) ratingFC = "Crazy Master!!";
+			if (sicks > 0) ratingFC = "Sick Master";
+			if (goods > 0) ratingFC = "Good Master";
+			if (bads > 0 || shits > 0) ratingFC = "Master";
+			if (songMisses > 0 && songMisses < 10) ratingFC = 'Dont Master...';
+			else if (songMisses >= 10) ratingFC = "You Player??";
 		}
 		updateScore(badHit); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce -Ghost
 		setOnLuas('rating', ratingPercent);
