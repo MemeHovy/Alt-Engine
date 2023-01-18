@@ -146,15 +146,6 @@ class VisualsUISubState extends BaseOptionsMenu
 			'Both camera',
 			['Both camera', 'HUD camera', 'Game camera']);
 		addOption(option);
-		
-		#if CHECK_FOR_UPDATES
-		var option:Option = new Option('Check for Updates',
-			'On Release builds, turn this on to check for updates when you start the game.',
-			'checkForUpdates',
-			'bool',
-			true);
-		addOption(option);
-		#end
         
         var option:Option = new Option('Winning icons',
 			'Show winning icons',
