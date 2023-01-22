@@ -1,4 +1,4 @@
-package izzy.core;
+package;
 
 import haxe.Json;
 import haxe.macro.Type.AnonType;
@@ -32,7 +32,7 @@ typedef SongMetadata =
 
 class SongDatabase
 {
-	public static var weeks:Array<Week>;
+	public static var weeks:Array<WeekData>;
 	public static var songs:Array<SongMetadata> = [];
 
 	public static function updateWeekList():Bool
