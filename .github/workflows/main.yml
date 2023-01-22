@@ -60,6 +60,7 @@ jobs:
           haxelib git hscript-ex https://github.com/ianharrigan/hscript-ex
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib git polymod https://github.com/larsiusprime/polymod
+          haxelib git extension-hscriptTools https://github.com/Fearester/HscriptTools-extension
           haxelib list
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
