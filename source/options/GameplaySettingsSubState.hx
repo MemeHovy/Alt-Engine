@@ -39,15 +39,15 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		title = 'Gameplay Settings';
 		rpcTitle = 'Gameplay Settings Menu'; //for Discord Rich Presence
         } else {
-        title = 'Настройка Игры';
-		rpcTitle = 'Меню Настройки Игры';
+                title = 'Настройка Геймплея';
+		rpcTitle = 'Меню Настройки Геймплея';
         }
 		var option:Option = new Option('Controller Mode',
 		    if(ClientPrefs.language == 'English')
 		    {
 			'Check this if you want to play with\na controller instead of using your Keyboard.',
 			} else {
-			'Проверьте это, если вы хотите играть с контроллером \nвместо использования клавиатуры.',
+			'Включите это, если вы хотите играть с контроллером \nвместо использования клавиатуры.',
 			}
 			'controllerMode',
 			'bool',
@@ -60,7 +60,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		    {
 			'If checked, notes go Down instead of Up, simple enough.', //Description
 		    } else {
-		    'Если флажок установлен, стрелки идут вниз, а не вверх, достаточно просто.', //Описание
+		    'Если включен, ноты идут вниз, а не вверх, достаточно просто.', //Описание
 		    }
 			'downScroll', //Save data variable name
 			'bool', //Variable type
@@ -72,7 +72,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		    {
 			'If checked, your notes get centered.',
 		    } else {
-		    "Если флажок установлен, ваши ноты будут центрированы.",
+		    "Если включен, ваши ноты будут в центре.",
 		    }
 			'middleScroll',
 			'bool',
@@ -83,7 +83,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		if(ClientPrefs.language == 'English'){
 			'If unchecked, opponent notes get hidden.',
 		} else {
-		"Если флажок снят, ноты противника будут скрыты.",
+		"Если выключен, ноты противника будут скрыты.",
 		}
 			'opponentStrums',
 			'bool',
@@ -94,7 +94,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		    if(ClientPrefs.language == 'English'){
 			"If checked, you won't get misses from pressing keys\nwhile there are no notes able to be hit.",
 		    } else {
-		    "Если флажок установлен, вы не будете получать промахи при нажатии клавиш \n, пока нет заметок, которые можно нажать.",
+		    "Если включен, то вы не будете получать промахи/ошибки при простом нажатии клавиш \n, пока нет нот которые надо нажать.",
 		    }
 			'ghostTapping',
 			'bool',
@@ -105,7 +105,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		if(ClientPrefs.language == 'English'){
 			"If checked, pressing Reset won't do anything.",
 		} else {
-		    "Если флажок установлен, нажатие кнопки перезапуска ничего не сделает",
+		    "Если включен, то нажатие кнопки СТЕРЕТЬ ничего не сделает",
 		}
 			'noReset',
 			'bool',
@@ -116,7 +116,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		if(ClientPrefs.language == 'English'){
 			'Funny notes does \"Tick!\" when you hit them."',
 		} else {
-		    "Забавные заметки \"тикают\", когда вы нажимаете на них.",
+		    "Смешнве ноты делают \"тик\", когда вы нажимаете на них.",
 		}
 			'hitsoundVolume',
 			'percent',
@@ -134,7 +134,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		{
 			'Changes how late/early you have to hit for a "Sick!"\nHigher values mean you have to hit later.',
 		} else {
-		"Изменяет, как поздно/рано вы нажали на |Sick| \nБолее высокие значения означают, что вы нажали на ноту позже.",
+		'Изменяет, как поздно/рано вы должнв нажать чтоб получить "Sick!"\nБолее высокие значения означает что вам надо нажать позже.',
 		}
 			'ratingOffset',
 			'int',
