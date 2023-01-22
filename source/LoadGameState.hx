@@ -16,7 +16,7 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.system.ThreadPool;
 
-class InitState extends FlxState
+class LoadGameState extends FlxState
 {
 	var splash:FlxSprite;
 	var text:FlxText;
