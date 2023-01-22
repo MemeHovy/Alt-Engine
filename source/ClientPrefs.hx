@@ -7,6 +7,7 @@ import flixel.graphics.FlxGraphic;
 import Controls;
 
 class ClientPrefs {
+        public static var language:String = 'Russian';
 	public static var downScroll:Bool = false;
 	public static var middleScroll:Bool = false;
 	public static var opponentStrums:Bool = true;
@@ -111,6 +112,7 @@ class ClientPrefs {
 
 	public static function saveSettings() {
 	    FlxG.save.data.screenRes = screenRes;
+                FlxG.save.data.language = language;
                 FlxG.save.data.drainType = drainType;
 		FlxG.save.data.downScroll = downScroll;
 		FlxG.save.data.middleScroll = middleScroll;
@@ -197,6 +199,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.flashing != null) {
 			flashing = FlxG.save.data.flashing;
+		}
+                if(FlxG.save.data.language != null) {
+			language = FlxG.save.data.language;
 		}
 		if(FlxG.save.data.globalAntialiasing != null) {
 			globalAntialiasing = FlxG.save.data.globalAntialiasing;
