@@ -53,7 +53,7 @@ class FPS extends TextField
 		currentFPS = 0;
 		selectable = false;
 		mouseEnabled = false;
-		defaultTextFormat = new TextFormat("_sans", 16, color);
+		defaultTextFormat = new TextFormat("VCR OSD MONO", 18, color);
 		autoSize = LEFT;
 		multiline = true;
 		text = "FPS: ";
@@ -86,17 +86,14 @@ class FPS extends TextField
 		var currentCount = times.length;
 		currentFPS = Math.round((currentCount + cacheCount) / 2);
 		if (currentFPS > ClientPrefs.framerate) currentFPS = ClientPrefs.framerate;
-        var MFps:Int;
 		if (currentCount != cacheCount /*&& visible*/)
 		{
 			var memoryMegas:Float = 0;
 			memoryMegas = Math.abs(FlxMath.roundDecimal(System.totalMemory / 1000000, 1));
-			if(currentFPS > MFps){
-			    currentFPS = MFps;
-			}
+
 			if(ClientPrefs.sysInfo == 'System' && ClientPrefs.showFPS)
 			{
-			text = "FPS: " + currentFPS + 'Max FPS: ' + MFps;
+			text = "FPS: " + currentFPS;
 			text += "\nMemory: " + memoryMegas + " MB";
 			text += "\nOperating system: " + '${lime.system.System.platformLabel} ${lime.system.System.platformVersion}';
             text += "\nGL Render: " + '${getGLInfo(RENDERER)}';
@@ -115,8 +112,8 @@ class FPS extends TextField
 			}
 			if(ClientPrefs.sysInfo == 'FPS ALT' && ClientPrefs.showFPS)
 			{
-			text = "FPS: " + currentFPS + 'Max FPS: ' + MFps;
-			text += "\nMemory: " + memoryMegas + " megabytes";
+			text = "FPS: " + '[' + currentFPS + ']';
+			text += "\nMemory: " + memoryMegas + " MB";
 			text += "\nAlt Engine version: " + MainMenuState.altEngineVersion;
 			text += "\nOperating system: " + '${lime.system.System.platformLabel} ${lime.system.System.platformVersion}';
             text += "\nGL Render: " + '${getGLInfo(RENDERER)}';
