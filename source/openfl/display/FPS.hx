@@ -97,8 +97,7 @@ class FPS extends TextField
 			if(ClientPrefs.sysInfo == 'System' && ClientPrefs.showFPS)
 			{
 			text = "FPS: " + currentFPS + 'Max FPS: ' + MFps;
-			text += "\nMemory: " + memoryMegas + " megabytes";
-			text -= "\nAlt Engine version: " + MainMenuState.altEngineVersion;
+			text += "\nMemory: " + memoryMegas + " MB";
 			text += "\nOperating system: " + '${lime.system.System.platformLabel} ${lime.system.System.platformVersion}';
             text += "\nGL Render: " + '${getGLInfo(RENDERER)}';
             text += "\nGL Shading version: " + '${getGLInfo(SHADING_LANGUAGE_VERSION)}';
@@ -106,20 +105,13 @@ class FPS extends TextField
 			if(ClientPrefs.sysInfo == 'OG FPS' && ClientPrefs.showFPS)
 			{
 			  text = "FPS: " + currentFPS;
-			  text -= "\nMemory: " + memoryMegas + " megabytes";
-			text -= "\nAlt Engine version: " + MainMenuState.altEngineVersion;
-			text -= "\nOperating system: " + '${lime.system.System.platformLabel} ${lime.system.System.platformVersion}';
-            text -= "\nGL Render: " + '${getGLInfo(RENDERER)}';
-            text -= "\nGL Shading version: " + '${getGLInfo(SHADING_LANGUAGE_VERSION)}';
 			}
 			if(ClientPrefs.sysInfo == 'PE FPS' && ClientPrefs.showFPS)
 			{
 			  text = "FPS: " + currentFPS;
+			  #if openfl
 			  text += "\nMemory: " + memoryMegas + "MB";
-			text -= "\nAlt Engine version: " + MainMenuState.altEngineVersion;
-			text -= "\nOperating system: " + '${lime.system.System.platformLabel} ${lime.system.System.platformVersion}';
-            text -= "\nGL Render: " + '${getGLInfo(RENDERER)}';
-            text -= "\nGL Shading version: " + '${getGLInfo(SHADING_LANGUAGE_VERSION)}';
+			  #end
 			}
 			if(ClientPrefs.sysInfo == 'FPS ALT' && ClientPrefs.showFPS)
 			{
