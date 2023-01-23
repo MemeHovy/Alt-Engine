@@ -42,7 +42,7 @@ class AppSubState extends BaseOptionsMenu
 			"Select Data File",
 			'filesData',
 			'string',
-			"APP","ANDROID DATA", "ROOT");
+			['APP','ANDROID DATA', 'ROOT']);
 		addOption(option);
 		#end
 		super();
