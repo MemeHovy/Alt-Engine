@@ -25,8 +25,11 @@ class FreeplaySelectState extends MusicBeatState{
 		}
         changeSelection();
         
+        #if android
         addVirtualPad(LEFT_FULL,A_B);
+        #end
         super.create();
+        
     }
 
     override public function update(elapsed:Float){
