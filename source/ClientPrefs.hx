@@ -7,7 +7,8 @@ import flixel.graphics.FlxGraphic;
 import Controls;
 
 class ClientPrefs {
-        public static var language:String = 'Russian';
+    public static var language:String = 'Russian';
+    public static var sysInfo:String = 'OG FPS';
 	public static var downScroll:Bool = false;
 	public static var middleScroll:Bool = false;
 	public static var opponentStrums:Bool = true;
@@ -115,6 +116,7 @@ class ClientPrefs {
                 FlxG.save.data.language = language;
                 FlxG.save.data.drainType = drainType;
 		FlxG.save.data.downScroll = downScroll;
+		FlxG.save.data.sysInfo = sysInfo;
 		FlxG.save.data.middleScroll = middleScroll;
 		FlxG.save.data.opponentStrums = opponentStrums;
 		FlxG.save.data.showFPS = showFPS;
@@ -190,6 +192,9 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.opponentStrums != null) {
 			opponentStrums = FlxG.save.data.opponentStrums;
+		}
+		if(FlxG.save.data.sysInfo != null) {
+			sysInfo = FlxG.save.data.sysInfo;
 		}
 		if(FlxG.save.data.showFPS != null) {
 			showFPS = FlxG.save.data.showFPS;
