@@ -114,7 +114,7 @@ class FreeplayVanillaState extends MusicBeatState
 		for (i in 0...songs.length)
 		{
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName, true, false);
-			songText.isMenuItemCenter = true;
+			songText.isMenuItem = true;
 			songText.targetY = i;
 			grpSongs.add(songText);
 
@@ -136,7 +136,7 @@ class FreeplayVanillaState extends MusicBeatState
 			icon.sprTracker = songText;
 
 			// using a FlxGroup is too much fuss!
-			p.push(icon);
+			iconArray.push(icon);
 			add(icon);
 
 			// songText.x += 40;
@@ -323,7 +323,7 @@ class FreeplayVanillaState extends MusicBeatState
 				colorTween.cancel();
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new FreeplaySelectState());
+			MusicBeatState.switchState(new MainMenuState());
 		}
 
 		if(ctrl)
