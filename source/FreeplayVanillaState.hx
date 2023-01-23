@@ -14,29 +14,11 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
 import flixel.system.FlxSound;
-import haxe.Json;
-#if MODS_ALLOWED
-import sys.FileSystem;
-#end
 
 using StringTools;
-typedef FreePlayData =
+
+class FreeplayVanillaState extends MusicBeatState 
 {
-    FreeplayScoreText:String,
-    SongAlpha:Float,
-    SongSelectedAlpha:Float,
-    FreeplayScoreBGPos:Array<Int>,
-    FreeplayScoreBGScale:Array<Float>,
-    ScoreTextP:Array<Int>,
-    FreeplayScoreTextSize:Int,
-    DiffTextP:Array<Int>,
-    FreeplayBG:String,
-    ScoreBGA:Float,
-    DifficultText:Array<String>,
-    DiffSize:Int,
-    iconAlpha:Array<Float>,
-}
-class FreeplayVanillaState extends MusicBeatState{
 	var songs:Array<SongMetadataCool> = [];
 
 	var selector:FlxText;
@@ -52,8 +34,7 @@ class FreeplayVanillaState extends MusicBeatState{
 	var intendedScore:Int = 0;
 	var intendedRating:Float = 0;
 	var leChars:Array<String> = [];
-    var FreeplayJSON:FreePlayData;
-    
+
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var curPlaying:Bool = false;
 
@@ -122,7 +103,7 @@ class FreeplayVanillaState extends MusicBeatState{
 			}
 		}*/
 
-		bg = new FlxSprite().loadGraphic(Paths.image(FreeplayJSON.FreeplayBG));
+		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
 		bg.screenCenter();
@@ -155,7 +136,7 @@ class FreeplayVanillaState extends MusicBeatState{
 			icon.sprTracker = songText;
 
 			// using a FlxGroup is too much fuss!
-			iconArray.push(icon);
+			p.push(icon);
 			add(icon);
 
 			// songText.x += 40;
@@ -164,16 +145,14 @@ class FreeplayVanillaState extends MusicBeatState{
 		}
 		WeekData.setDirectoryFromWeek();
 
-		scoreText = new FlxText(FreeplayJSON.ScoreTextP[0],FreeplayJSON.ScoreTextP[1], 0,FreeplayJSON.FreeplayScoreText, FreeplayJSON.FreeplayScoreTextSize);
-		scoreText.setFormat(Paths.font("vcr.ttf"), FreeplayJSON.FreeplayScoreTextSize, FlxColor.WHITE, RIGHT);
+		scoreText = new FlxText(FlxG.width * 0.7, 5, 0, "", 32);
+		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, RIGHT);
 
-		scoreBG = new FlxSprite(FreeplayJSON.FreeplayScoreBGPos[0], FreeplayJSON.FreeplayScoreBGPos[1]).makeGraphic(1, 1,0xFF000000);
-		scoreBG.alpha = FreeplayJSON.ScoreBGA;
-		scoreBG.scale.x = FreeplayJSON.FreeplayScoreBGScale[0];
-		scoreBG.scale.y = FreeplayJSON.FreeplayScoreBGScale[1];
+		scoreBG = new FlxSprite(scoreText.x - 6, 0).makeGraphic(1, 66, 0xFF000000);
+		scoreBG.alpha = 0.6;
 		add(scoreBG);
 
-		diffText = new FlxText(FreeplayJSON.DiffTextP[0],FreeplayJSON.DiffTextP[1], 0, "", FreeplayJSON.DiffSize);
+		diffText = new FlxText(scoreText.x, scoreText.y + 36, 0, "", 24);
 		diffText.font = scoreText.font;
 		add(diffText);
 
@@ -230,7 +209,6 @@ class FreeplayVanillaState extends MusicBeatState{
 		#if android
 		addVirtualPad(LEFT_FULL, A_B_C_X_Y_Z);
 		#end
-		
 		super.create();
 	}
 
@@ -299,6 +277,7 @@ class FreeplayVanillaState extends MusicBeatState{
 		var upP = controls.UI_UP_P;
 		var downP = controls.UI_DOWN_P;
 		var accepted = controls.ACCEPT;
+		var space = FlxG.keys.justPressed.SPACE;
 		var ctrl = FlxG.keys.justPressed.CONTROL #if android || virtualPad.buttonC.justPressed #end;
 
 		var shiftMult:Int = 1;
@@ -344,7 +323,7 @@ class FreeplayVanillaState extends MusicBeatState{
 				colorTween.cancel();
 			}
 			FlxG.sound.play(Paths.sound('cancelMenu'));
-			MusicBeatState.switchState(new MainMenuState());
+			MusicBeatState.switchState(new FreeplaySelectState());
 		}
 
 		if(ctrl)
@@ -352,7 +331,7 @@ class FreeplayVanillaState extends MusicBeatState{
 			persistentUpdate = false;
 			openSubState(new GameplayChangersSubstate());
 		}
-		if(instPlaying != curSelected)
+			if(instPlaying != curSelected)
 			{
 				#if PRELOAD_ALL
 				destroyFreeplayVocals();
@@ -411,7 +390,7 @@ class FreeplayVanillaState extends MusicBeatState{
 		}
 		else if(controls.RESET)
 		{
-		   	#if android
+	     	#if android
 			removeVirtualPad();
 			#end
 			persistentUpdate = false;
@@ -446,7 +425,7 @@ class FreeplayVanillaState extends MusicBeatState{
 		#end
 
 		PlayState.storyDifficulty = curDifficulty;
-		diffText.text = FreeplayJSON.DifficultText[0] + CoolUtil.difficultyString() + FreeplayJSON.DifficultText[1];
+		diffText.text = '< ' + CoolUtil.difficultyString() + ' >';
 		positionHighscore();
 	}
 
@@ -486,23 +465,23 @@ class FreeplayVanillaState extends MusicBeatState{
 		for (i in 0...iconArray.length)
 		{
 			iconArray[i].alpha = 0.6;
-		    iconArray[i].animation.curAnim.curFrame = 0; 
+			iconArray[i].animation.curAnim.curFrame = 0; 
 		}
 
         iconArray[curSelected].animation.curAnim.curFrame = 2; 
-		iconArray[curSelected].alpha = FreeplayJSON.iconAlpha[1];
+		iconArray[curSelected].alpha = 1;
 
 		for (item in grpSongs.members)
 		{
 			item.targetY = bullShit - curSelected;
 			bullShit++;
 
-			item.alpha = FreeplayJSON.SongAlpha;
+			item.alpha = 0.6;
 			// item.setGraphicSize(Std.int(item.width * 0.8));
 
 			if (item.targetY == 0)
 			{
-				item.alpha = FreeplayJSON.SongSelectedAlpha;
+				item.alpha = 1;
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
@@ -552,15 +531,12 @@ class FreeplayVanillaState extends MusicBeatState{
 	}
 
 	private function positionHighscore() {
-		scoreText.x = FreeplayJSON.ScoreTextP[0];
-		scoreText.y = FreeplayJSON.ScoreTextP[1];
+		scoreText.x = FlxG.width - scoreText.width - 6;
 
-		scoreBG.scale.x = FreeplayJSON.FreeplayScoreBGScale[0];
-		scoreBG.scale.y = FreeplayJSON.FreeplayScoreBGScale[1];
-		scoreBG.x = FreeplayJSON.FreeplayScoreBGPos[0];
-		scoreBG.y = FreeplayJSON.FreeplayScoreBGPos[1];
-		diffText.y = FreeplayJSON.DiffTextP[1];
-		diffText.x = FreeplayJSON.DiffTextP[0];
+		scoreBG.scale.x = FlxG.width - scoreText.x + 6;
+		scoreBG.x = FlxG.width - (scoreBG.scale.x / 2);
+		diffText.x = Std.int(scoreBG.x + (scoreBG.width / 2));
+		diffText.x -= diffText.width / 2;
 	}
 }
 
