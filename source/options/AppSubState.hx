@@ -30,19 +30,21 @@ import openfl.Lib;
 
 using StringTools;
 
-class LanguageSubState extends BaseOptionsMenu
+class AppSubState extends BaseOptionsMenu
 {
      public function new()
 	{
-		title = 'Language Select';
-		rpcTitle = 'Select Language menu'; //for Discord Rich Presence
+	    #if android
+		title = 'File Data Select';
+		rpcTitle = 'Select File Data Menu'; //for Discord Rich Presence
 
-		var option:Option = new Option('Language',
-			"Select Language",
-			'Language',
+		var option:Option = new Option('System Data',
+			"Select Data File",
+			'filesData',
 			'string',
-			"English","Russian");
+			"APP","ANDROID DATA", "ROOT");
 		addOption(option);
+		#end
 		super();
 	}
 }
