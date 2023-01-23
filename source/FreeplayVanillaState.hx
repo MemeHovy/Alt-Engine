@@ -352,8 +352,7 @@ class FreeplayVanillaState extends MusicBeatState{
 			persistentUpdate = false;
 			openSubState(new GameplayChangersSubstate());
 		}
-		{
-			if(instPlaying != curSelected)
+		if(instPlaying != curSelected)
 			{
 				#if PRELOAD_ALL
 				destroyFreeplayVocals();
@@ -375,7 +374,6 @@ class FreeplayVanillaState extends MusicBeatState{
 				instPlaying = curSelected;
 				#end
 			}
-		}
 		else if (accepted)
 		{
 			persistentUpdate = false;
