@@ -120,12 +120,21 @@ class SUtil
 		#if android
 		switch (type)
 		{
+                        if(ClientPrefs.filesData == 'ANDROID_DATA') 
+                        {
 			case ANDROID_DATA:
 				daPath = Context.getExternalFilesDir(null) + '/';
+                        }
+                        if(ClientPrefs.filesData == 'ROOT') 
+                        {
 			case ROOT:
 				daPath = Context.getFilesDir() + '/';
+                        }
+                        if(ClientPrefs.filesData == 'APP') 
+                        {
 			case APP_DATA:
 				daPath = Environment.getExternalStorageDirectory() + '/' + '.' + Lib.application.meta.get('file') + ' ' + '[' + MainMenuState.altEngineVersion + ']' + '/';
+                        }
 		}
 		//if (!FileSystem.exists(SUtil.getPath() + Path.directory(daPath)))
 			//SUtill.copyContent(Path.directory(daPath), Path.directory(daPath)); //this shit was made by an undertale fan and its prob not gonna work
