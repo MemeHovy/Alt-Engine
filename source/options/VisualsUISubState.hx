@@ -131,6 +131,14 @@ class VisualsUISubState extends BaseOptionsMenu
 			['None', 'Note Hit', 'Always']);
 		addOption(option);
 		
+		var option:Option = new Option('FPS Type:',
+			"Change FPS Type",
+			'sysInfo',
+			'string',
+			'OG FPS',
+			['None', 'System', 'PE FPS', 'FPS ALT', 'OG FPS']);
+		addOption(option);
+		
 		var option:Option = new Option('Beat Type:',
 			"Change Beat Type",
 			'beatType',
