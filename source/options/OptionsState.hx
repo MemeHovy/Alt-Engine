@@ -69,11 +69,6 @@ class OptionsState extends MusicBeatState
 				removeVirtualPad();
 				#end
 				openSubState(new options.VolumeOptionsSubState());
-			case 'Data Options':
-				#if android
-				removeVirtualPad();
-				#end
-				openSubState(new options.AppSubState());
 		}
 	}
 
