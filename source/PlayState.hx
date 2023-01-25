@@ -4163,8 +4163,8 @@ class PlayState extends MusicBeatState
 		rating.x = coolText.x - 40;
 		rating.y -= 60;
 		rating.acceleration.x = -550;
-		rating.scale.x = 1.105;
-		rating.scale.y = 1.105;
+		rating.scale.x = 1.075;
+		rating.scale.y = 1.075;
 		RateTween = FlxTween.tween(rating.scale, {x: 1, y: 1}, 0.2, {
 				onComplete: function(twn:FlxTween) {
 					RateTween = null;
@@ -4758,9 +4758,9 @@ class PlayState extends MusicBeatState
 				if(combo > 9999) combo = 9999;
 				popUpScore(note);
 			}
-			
+			if(!note.isSustainNote && ClientPrefs.oldInput){
 			health += note.hitHealth * healthGain;
-
+		}
 			if(!note.noAnimation) {
 				var animToPlay:String = singAnimations[Std.int(Math.abs(note.noteData))];
 
@@ -5210,14 +5210,14 @@ class PlayState extends MusicBeatState
 
 			if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'Both camera' && ClientPrefs.beatType == '1/16')
 			{
-				FlxG.camera.zoom += 0.03 * camZoomingMult;
-				camHUD.zoom += 0.06 * camZoomingMult;
+				FlxG.camera.zoom += 0.012 * camZoomingMult;
+				camHUD.zoom += 0.017 * camZoomingMult;
 			} else if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'HUD camera' && ClientPrefs.beatType == '1/16')
 			{
-				camHUD.zoom += 0.06 * camZoomingMult;
+				camHUD.zoom += 0.012 * camZoomingMult;
 			} else if (camZooming && FlxG.camera.zoom < 1.35 && ClientPrefs.camZooms && ClientPrefs.beatMode == 'Game camera' && ClientPrefs.beatType == '1/16')
 			{
-				FlxG.camera.zoom += 0.03 * camZoomingMult;
+				FlxG.camera.zoom += 0.017 * camZoomingMult;
 			}
 
 			if (SONG.notes[curSection].changeBPM)
@@ -5312,7 +5312,7 @@ class PlayState extends MusicBeatState
 		spr.resetAnim = time == null ? 0 : time;
 	}
 
-	public var ratingName:String = '?';
+	public var ratingName:String = '<N/A>';
 	public var ratingPercent:Float;
 	public var ratingFC:String;
 	public function RecalculateRating(badHit:Bool = false) {
@@ -5320,18 +5320,11 @@ class PlayState extends MusicBeatState
 		setOnLuas('misses', songMisses);
 		setOnLuas('hits', songHits);
 
-        greatsPercent = (greats / noteHit);
-		sicksPercent = (sicks / noteHit);
-		goodsPercent = (goods / noteHit);
-		badsPercent = (bads / noteHit);
-		shitsPercent = (shits / noteHit);
-		sadsPercent = (sads / noteHit);
-		
 		var ret:Dynamic = callOnLuas('onRecalculateRating', [], false);
 		if(ret != FunkinLua.Function_Stop)
 		{
 			if(totalPlayed < 1) //Prevent divide by 0
-				ratingName = '[N/A]';
+				ratingName = '<N/A>';
 			else
 			{
 				// Rating Percent
@@ -5340,6 +5333,10 @@ class PlayState extends MusicBeatState
 
 				// Rating Name
 				if(ratingPercent >= 1)
+				{
+					ratingName = ratingStuff[ratingStuff.length-1][0]; //Uses last string
+				}
+				else
 				{
 					for (i in 0...ratingStuff.length-1)
 					{
@@ -5353,13 +5350,14 @@ class PlayState extends MusicBeatState
 			}
 
 			// Rating FC
-			ratingFC = "";
-			if (greats > 0) ratingFC = "Crazy Master!!";
+			ratingFC = "[N/A]";
+			if (greats > 0) ratingFC = "You Play like PRO?"
 			if (sicks > 0) ratingFC = "Sick Master!";
-			if (goods > 0) ratingFC = "Good Master";
-			if (bads > 0 || shits > 0) ratingFC = "Master";
-			if (songMisses > 0 && songMisses < 10) ratingFC = 'Not even Master...';
-			else if (songMisses >= 10) ratingFC = "Are you Player??";
+			if (goods > 0) ratingFC = "Good Master!";
+			if (bads > 0 || shits > 0 || sads > 0) ratingFC = "Master!";
+			if (songMisses > 0 && songMisses < 10) ratingFC = "Not Master!";
+			else if (songMisses >= 10) ratingFC = "Not Player...";
+			
 		}
 		updateScore(badHit); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce -Ghost
 		setOnLuas('rating', ratingPercent);
@@ -5397,8 +5395,6 @@ class PlayState extends MusicBeatState
 									if(achievementName == 'week5_nomiss') unlock = true;
 								case 'week6':
 									if(achievementName == 'week6_nomiss') unlock = true;
-								case 'week7':
-									if(achievementName == 'week7_nomiss') unlock = true;
 							}
 						}
 					case 'ur_bad':
