@@ -115,7 +115,7 @@ class SUtil
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
-	public static function getPath(type:StorageType = DOWNLOAD_FOLDER):String
+	public static function getPath(type:StorageType = APP_DATA):String
 	{
 		var daPath:String = '';
 		#if android
