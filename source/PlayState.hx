@@ -5351,13 +5351,13 @@ class PlayState extends MusicBeatState
 
 			// Rating FC
 			ratingFC = "[N/A]";
-			if (greats > 0) ratingFC = "You Play like PRO?"
+			if (greats > 0) ratingFC = "You Play like PRO?";
 			if (sicks > 0) ratingFC = "Sick Master!";
 			if (goods > 0) ratingFC = "Good Master!";
 			if (bads > 0 || shits > 0 || sads > 0) ratingFC = "Master!";
 			if (songMisses > 0 && songMisses < 10) ratingFC = "Not Master!";
 			else if (songMisses >= 10) ratingFC = "Not Player...";
-			
+
 		}
 		updateScore(badHit); // score will only update after rating is calculated, if it's a badHit, it shouldn't bounce -Ghost
 		setOnLuas('rating', ratingPercent);
@@ -5434,6 +5434,14 @@ class PlayState extends MusicBeatState
 						}
 					case 'debugger':
 						if(Paths.formatToSongPath(SONG.song) == 'test' && !usedPractice) {
+							unlock = true;
+						}
+					case 'just_press':
+						if(!ClientPrefs.oldInput) {
+							unlock = true;
+						}
+					case 'pressed_out':
+						if(ClientPrefs.oldInput) {
 							unlock = true;
 						}
 				}
