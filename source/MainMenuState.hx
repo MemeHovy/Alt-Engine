@@ -43,15 +43,14 @@ typedef MenuData =
     creditsS:Array<Float>,
     optionsS:Array<Float>,
     centerX:Bool,
-    menuBG:String,
-    Tweens:Bool
+    menuBG:String
 }
 
 class MainMenuState extends MusicBeatState
 {
     var MainJSON:MenuData;
 	public static var psychEngineVersion:String = '0.6.2'; //This is also used for Discord RPC
-    public static var altEngineVersion:String = '2.0';
+    public static var altEngineVersion:String = '2.1 [ALPHA]';
 	public static var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
