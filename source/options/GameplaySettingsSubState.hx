@@ -158,6 +158,13 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.maxValue = 5;
 		option.changeValue = 0.1;
 		addOption(option);
+		
+		var option:Option = new Option('Health Input', //Name
+			'If checked, health not add sustain notes.', //Description
+			'oldInput', //Save data variable name
+			'bool', //Variable type
+			true); //Default value
+		addOption(option);
 
 		super();
 	}
