@@ -5351,7 +5351,7 @@ class PlayState extends MusicBeatState
 
 			// Rating FC
 			ratingFC = "[N/A]";
-			if (greats > 0) ratingFC = "You Play like PRO?"
+			if (greats > 0) ratingFC = "You Play like PRO?";
 			if (sicks > 0) ratingFC = "Sick Master!";
 			if (goods > 0) ratingFC = "Good Master!";
 			if (bads > 0 || shits > 0 || sads > 0) ratingFC = "Master!";
