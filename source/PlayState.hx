@@ -4571,7 +4571,7 @@ class PlayState extends MusicBeatState
 		});
 		combo = 0;
 		
-		if(ClientPrefs.oldInput && !note.isSustainNote)
+		if(ClientPrefs.oldInput && !daNote.isSustainNote)
 		{
 		health -= daNote.missHealth * healthLoss;
 		} else {
