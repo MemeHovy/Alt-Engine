@@ -4571,7 +4571,11 @@ class PlayState extends MusicBeatState
 		});
 		combo = 0;
 		
-		if(ClientPrefs.oldInput)
+		if(ClientPrefs.oldInput && !note.isSustainNote)
+		{
+		health -= daNote.missHealth * healthLoss;
+		}
+		if(!ClientPrefs.oldInput && note.isSustainNote)
 		{
 		health -= daNote.missHealth * healthLoss;
 		}
@@ -4654,7 +4658,9 @@ class PlayState extends MusicBeatState
 
 	function opponentNoteHit(note:Note):Void
 	{
-	    if(healthBar.percent > 20 && ClientPrefs.drainType == 'Note Hit')
+	    if(healthBar.percent > 20 && ClientPrefs.drainType == 'Note Hit' && !note.isSustainNote && ClientPrefs.oldInput)
+	    health -= 0.023 * ClientPrefs.healthDrain;
+	    if(healthBar.percent > 20 && ClientPrefs.drainType == 'Note Hit' && note.isSustainNote && !ClientPrefs.oldInput)
 	    health -= 0.023 * ClientPrefs.healthDrain;
 		if (Paths.formatToSongPath(SONG.song) != 'tutorial')
 			camZooming = true;
@@ -4763,6 +4769,9 @@ class PlayState extends MusicBeatState
 				popUpScore(note);
 			}
 			if(!note.isSustainNote && ClientPrefs.oldInput){
+			health += note.hitHealth * healthGain;
+		}
+			if(note.isSustainNote && !ClientPrefs.oldInput){
 			health += note.hitHealth * healthGain;
 		}
 			if(!note.noAnimation) {
