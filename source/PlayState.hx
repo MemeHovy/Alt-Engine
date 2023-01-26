@@ -4570,7 +4570,11 @@ class PlayState extends MusicBeatState
 			}
 		});
 		combo = 0;
+		
+		if(ClientPrefs.oldInput)
+		{
 		health -= daNote.missHealth * healthLoss;
+		}
 		
 		if(instakillOnMiss)
 		{
