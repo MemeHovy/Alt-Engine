@@ -40,7 +40,7 @@ typedef FreePlayData =
     ScoreBGA:Float,
     DifficultText:Array<String>,
     DiffSize:Int,
-    iconAlpha:Array<Float>,
+    iconAlpha:Array<Float>
 }
 
 class FreeplayState extends MusicBeatState
