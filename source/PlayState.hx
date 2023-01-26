@@ -4574,9 +4574,7 @@ class PlayState extends MusicBeatState
 		if(ClientPrefs.oldInput && !note.isSustainNote)
 		{
 		health -= daNote.missHealth * healthLoss;
-		}
-		if(!ClientPrefs.oldInput && note.isSustainNote)
-		{
+		} else {
 		health -= daNote.missHealth * healthLoss;
 		}
 		
@@ -4658,10 +4656,11 @@ class PlayState extends MusicBeatState
 
 	function opponentNoteHit(note:Note):Void
 	{
-	    if(healthBar.percent > 20 && ClientPrefs.drainType == 'Note Hit' && !note.isSustainNote && ClientPrefs.oldInput)
+	    if(healthBar.percent > 20 && ClientPrefs.drainType == 'Note Hit' && !note.isSustainNote && ClientPrefs.oldInput){
 	    health -= 0.023 * ClientPrefs.healthDrain;
-	    if(healthBar.percent > 20 && ClientPrefs.drainType == 'Note Hit' && note.isSustainNote && !ClientPrefs.oldInput)
+	    } else {
 	    health -= 0.023 * ClientPrefs.healthDrain;
+	    }
 		if (Paths.formatToSongPath(SONG.song) != 'tutorial')
 			camZooming = true;
 
@@ -4770,8 +4769,7 @@ class PlayState extends MusicBeatState
 			}
 			if(!note.isSustainNote && ClientPrefs.oldInput){
 			health += note.hitHealth * healthGain;
-		}
-			if(note.isSustainNote && !ClientPrefs.oldInput){
+		} else {
 			health += note.hitHealth * healthGain;
 		}
 			if(!note.noAnimation) {
